@@ -1,0 +1,150 @@
+﻿@using UnSpaceWebApp.Models
+@{
+    ViewBag.Title = "Let's UnSpace Your Space!";
+}
+<style type="text/css">
+    .spaceForm label{
+        float:left;
+        text-align:right;
+        width:100px;
+        padding-right:10px;
+        font-weight:bold;
+        font-size:1em;
+    }
+    .spaceForm input[type=text]{
+        width:60px;
+    }
+    .spaceForm select{
+        width: 60px;
+    }
+    .mySpace{
+        background-color:transparent;
+    }
+</style>
+<h2>@ViewBag.Title</h2>
+
+<script src="/Scripts/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+    function DisplayMySpace() { 
+        //This creates a new div based on the user input
+        var div;
+        var width = document.getElementById("Width").value;
+        var length = document.getElementById("Length").value;
+        //This logic will convert the input from ft / in to cm and then px
+        var measurement = document.getElementById("Measurement").value;
+        switch (measurement) {
+            case "cm":
+                break;
+            case "ft":
+                width = width / 0.032808;
+                length = length / 0.032808;
+                break;
+            case "in":
+                width = width * 12 / 0.032808;
+                length = length * 12 / 0.032808;
+                break;
+        }
+        width = width * 1.5;
+        length = length * 1.5;
+        div = document.createElement("div");
+        div.style.width = width + "px";
+        div.style.height = length + "px";
+        div.style.border = "1px dashed black";
+        div.style.background = "white";
+        document.getElementById("mySpace").append(div);
+
+        //This hides/shows the generate space form
+        var x = document.getElementById("generateSpace");
+        x.style.display = "none";
+
+        //This shows the add furniture form
+        var y = document.getElementById("addFurn");
+        y.style.display = "block";
+    }
+
+    function DisplayFurn() {
+        var mousePosition;
+        var offset = [0,0];
+        var div;
+        var isDown = false;
+
+        
+        var width = document.getElementById("FurnWidth").value;
+        var length = document.getElementById("FurnLength").value;
+        //This logic will convert the input from ft / in to cm and then px
+        var measurement = document.getElementById("FurnMeasurement").value;
+        switch (measurement) {
+            case "cm":
+                break;
+            case "ft":
+                width = width / 0.032808;
+                length = length / 0.032808;
+                break;
+            case "in":
+                width = width * 12 / 0.032808;
+                length = length * 12 / 0.032808;
+                break;
+        }
+        width = width * 1.5;
+        length = length * 1.5;
+        div = document.createElement("div");
+        div.style.position = "absolute";
+        div.style.width = width + "px";
+        div.style.height = length + "px";
+        div.style.background = "red";
+                
+        document.getElementById("mySpace").append(div);
+
+        div.addEventListener('mousedown', function(e) {
+            isDown = true;
+            offset = [
+                div.offsetLeft - e.clientX,
+                div.offsetTop - e.clientY
+            ];
+        }, true);
+
+        document.addEventListener('mouseup', function() {
+            isDown = false;
+        }, true);
+
+        document.addEventListener('mousemove', function(event) {
+            event.preventDefault();
+            if (isDown) {
+                mousePosition = {
+    
+                    x : event.clientX,
+                    y : event.clientY
+    
+                };
+                div.style.left = (mousePosition.x + offset[0]) + 'px';
+                div.style.top  = (mousePosition.y + offset[1]) + 'px';
+            }
+        }, true);
+    }
+</script>
+
+<div id="mySpace" class="mySpace"></div>
+
+<div id="generateSpace" class="spaceForm">
+        @Html.Label("Width", "Width: ")
+        @Html.TextBox("Width", "", new { @class = "form-control" })
+        @Html.Label("Length", "Length: ")
+        @Html.TextBox("Length", "", new { @class = "form-control" })
+        @Html.Label("Measurement", "Measurement: ")
+        @Html.DropDownList("Measurement",
+                        new SelectList(Enum.GetValues(typeof(TypesOfMeasurement))),
+                        new { @class = "form-control" })
+        <button onclick="DisplayMySpace()">Generate Space</button>
+</div>
+
+<div id="addFurn" class="spaceForm" style="display:none">
+        @Html.Label("FurnWidth", "Width: ")
+        @Html.TextBox("FurnWidth", "", new { @class = "form-control" })
+        @Html.Label("FurnLength", "Length: ")
+        @Html.TextBox("FurnLength", "", new { @class = "form-control" })
+        @Html.Label("FurnMeasurement", "Measurement: ")
+        @Html.DropDownList("FurnMeasurement",
+                        new SelectList(Enum.GetValues(typeof(TypesOfMeasurement))),
+                        new { @class = "form-control" })
+        <button onclick="DisplayFurn()">Add Furniture</button>
+</div>
