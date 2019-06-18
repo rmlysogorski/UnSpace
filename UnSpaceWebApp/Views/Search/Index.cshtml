@@ -1,4 +1,4 @@
-﻿
+﻿@model List<UnSpaceWebApp.Models.EtsyItem>
 @{
     ViewBag.Title = "Index";
 }
@@ -6,6 +6,14 @@
 <h2>Index</h2>
 
 <form action="../Search/ProductList" method="post">
-    <input type="text" value="Furniture?" />
-    <input type="submit" value="Sumbit" class="btn-danger"/>
+    <input type="text" name="searchQ" value="Furniture?" />
+    <input type="submit" value="Sumbit" class="btn-danger" />
 </form>
+
+@if (Model != null)
+{
+    foreach (var m in Model)
+    {
+        @m.Listing_Id
+    }
+}
