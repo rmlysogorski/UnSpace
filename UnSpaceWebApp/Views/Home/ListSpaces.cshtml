@@ -1,15 +1,35 @@
-﻿
+﻿@*@*@*@*@Model
 
-@{
-    ViewBag.Title = "ListSpaces";
-}
+    @{
+        ViewBag.Title = "ListSpaces";
+    }
 
-<h2>ListSpaces</h2>
+    <h2>ListSpaces</h2>
 
-<h1>Hello @User.Identity.Name </h1>
+    <h1>Hello @User.Identity.Name </h1>
 
 
-<div class="container-fluid">
-    
-</div>
+    <div class="container-fluid">
+        <table>
 
+            <tr>
+                <th>@User.Identity.Name, here are your favorites below</th>
+            </tr>
+            @foreach (var fav in  )
+            {
+                <tr>
+                    <td>
+
+                    </td>
+                </tr>
+            }
+
+
+        </table>
+    </div>*@
+
+    <form action="/Home/QRCode" method="get">
+        <input type="text" name="incomingUrl" />
+        <input type="submit" value="get qr code" />
+
+    </form>
