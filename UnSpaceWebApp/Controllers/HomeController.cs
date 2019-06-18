@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
+using QRCoder;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -8,11 +11,22 @@ using System.Web.Mvc;
 
 namespace UnSpaceWebApp.Controllers
 {
+    
     public class HomeController : Controller
     {
-
         public ActionResult Index()
         {
+            return View();
+        }
+        
+        public ActionResult QRCode(string incomingUrl)
+        {
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(incomingUrl, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            Bitmap qrCodeImage = qrCode.GetGraphic(20);
+            qrCodeImage.Save(Response.OutputStream, ImageFormat.Gif);
+            ViewBag.Image = qrCodeImage;
             return View();
         }
         public ActionResult ListSpaces()
