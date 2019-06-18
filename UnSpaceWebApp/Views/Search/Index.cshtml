@@ -5,15 +5,47 @@
 
 <h2>Index</h2>
 
-<form action="../Search/ProductList" method="post">
-    <input type="text" name="searchQ" value="Furniture?" />
-    <input type="submit" value="Sumbit" class="btn-danger" />
+<form action="../Search/NewProductList" method="post">
+    <input type="text" name="searchQ" placeholder="Type of Furniture" />
+    <input type="submit" value="Submit" class="btn-danger" />
 </form>
 
 @if (Model != null)
 {
     foreach (var m in Model)
     {
-        @m.Listing_Id
+        <p>@m.Listing_Id</p>
+        <p>@m.Title</p>
+        <p>@m.Url</p>
+        <p>@m.Price</p>
+        <p>@m.Currency_Code</p>
+        <p>@m.Item_Width</p>
+        <p>@m.Item_Length</p>
+        <p>@m.Item_Height</p>
+        <p>@m.Item_Dimensions_unit</p>
+        <p><img src="@m.ImageThumbUrl" /></p>
+        @*<p><img src="@m.ImageFullUrl" /></p>*@
+    }
+}
+
+
+@if (Model != null)
+{
+    if (ViewBag.Prev != null)
+    {
+        <a href="@Url.Action("SearchPage", "Search", new { pageNo = ViewBag.Prev, searchQ = ViewBag.SearchQ, forOrBack = "back" })">Prev</a>
+    }
+    else if (ViewBag.CountPage > 0)
+    {
+        <a href="@Url.Action("ProductList", "Search", new { searchQ = ViewBag.SearchQ, forOrBack = "back" })">Prev</a>
+    }
+
+    if (ViewBag.Next != null)
+    {
+        <a href="@Url.Action("SearchPage", "Search", new { pageNo = ViewBag.Next, searchQ = ViewBag.SearchQ, forOrBack = "for" })">Next</a>
+    }
+    else
+    {
+        <a href="@Url.Action("ProductList", "Search", new { searchQ = ViewBag.SearchQ, forOrBack = "for" })">Next</a>
     }
 }

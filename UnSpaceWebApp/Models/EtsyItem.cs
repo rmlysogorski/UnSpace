@@ -16,6 +16,8 @@ namespace UnSpaceWebApp.Models
         public string Item_Height { set; get; }
         public string Item_Dimensions_unit { set; get; }
         public string Url { set; get; }
+        public string ImageThumbUrl { set; get; }
+        public string ImageFullUrl { set; get; }
 
     }
 }

@@ -13,11 +13,19 @@ namespace UnSpaceWebApp.Models
     public class EtsyDAL
     {
         private static string APIKey = ConfigurationManager.AppSettings["EtsyAPIKey"];
-        public static JObject GetEtsyAPI(string options)
+        public static JObject GetEtsyAPI(string options, string code)
         {
-            HttpWebRequest request = WebRequest.CreateHttp($"https://openapi.etsy.com/v2/listings/active?api_key={APIKey}{options}");
+            string url = "https://openapi.etsy.com/v2/listings/";
+            if (code == "active")
+            {
+                url += $"active?api_key={APIKey}{options}";
+            }
+            if(code == "image")
+            {
+                url += $"{options}/images?api_key={APIKey}";
+            }
 
-
+            HttpWebRequest request = WebRequest.CreateHttp(url);
             request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0";
 
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
