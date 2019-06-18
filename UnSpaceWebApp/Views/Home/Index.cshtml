@@ -1,11 +1,36 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-    <head>
-        <link rel="stylesheet" href="~/StyleSheet1.css" />
-    </head>
-<body>
-    <form action="" method="post">
+<style type="text/css">    
+    .btn{
+        border: 1px solid #3498db;
+        background: none;
+        padding: 20px 40px;
+        font-size: 20px;
+        font-family: "montserrat" ;
+        cursor: pointer;
+        margin: 10px;
+        transition: 0.9s;
+        position: relative;
+        overflow: hidden;
+    }
+    .btn1:hover, .btn2:hover {
+        color: #3498db;
+    }
+    .btn::before{
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 0%;
+        background: #3498db;   
+        z-index: -1;
+        transition: 0.8s;
+    }
+</style>
+
+<div style="text-align:center;display:block;">
+    <form action="../Space/Index" method="post">
         <div>
             <button class="btn btn1">Create Space</button>
         </div>
@@ -15,4 +40,4 @@
             <button class="btn btn2">View Your Spaces</button>
         </div>
     </form>
-</body>
+</div>
