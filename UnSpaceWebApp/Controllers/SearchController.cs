@@ -72,6 +72,7 @@ namespace UnSpaceWebApp.Models
                     newItem.ImageThumbUrl = imageData["results"][0]["url_75x75"].ToString();
                     newItem.ImageFullUrl = imageData["results"][0]["url_fullxfull"].ToString();
                     items.Add(newItem);
+                    System.Threading.Thread.Sleep(500);
                 }
             }
             TempData["items"] = items;
