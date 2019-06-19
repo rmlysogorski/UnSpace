@@ -1,150 +1,88 @@
 ﻿@using UnSpaceWebApp.Models
+@model UnSpaceWebApp.Models.MySpace
 @{
     ViewBag.Title = "Let's UnSpace Your Space!";
 }
-<style type="text/css">
-    .spaceForm label{
-        float:left;
-        text-align:right;
-        width:100px;
-        padding-right:10px;
-        font-weight:bold;
-        font-size:1em;
-    }
-    .spaceForm input[type=text]{
-        width:60px;
-    }
-    .spaceForm select{
-        width: 60px;
-    }
-    .mySpace{
-        background-color:transparent;
-    }
-</style>
+
 <h2>@ViewBag.Title</h2>
 
-<script src="/Scripts/jquery-3.4.1.js"></script>
-<script type="text/javascript">
-    function DisplayMySpace() { 
-        //This creates a new div based on the user input
-        var div;
-        var width = document.getElementById("Width").value;
-        var length = document.getElementById("Length").value;
-        //This logic will convert the input from ft / in to cm and then px
-        var measurement = document.getElementById("Measurement").value;
-        switch (measurement) {
-            case "cm":
-                break;
-            case "ft":
-                width = width / 0.032808;
-                length = length / 0.032808;
-                break;
-            case "in":
-                width = width * 12 / 0.032808;
-                length = length * 12 / 0.032808;
-                break;
-        }
-        width = width * 1.5;
-        length = length * 1.5;
-        div = document.createElement("div");
-        div.style.width = width + "px";
-        div.style.height = length + "px";
-        div.style.border = "1px dashed black";
-        div.style.background = "white";
-        document.getElementById("mySpace").append(div);
-
-        //This hides/shows the generate space form
-        var x = document.getElementById("generateSpace");
-        x.style.display = "none";
-
-        //This shows the add furniture form
-        var y = document.getElementById("addFurn");
-        y.style.display = "block";
-    }
-
-    function DisplayFurn() {
-        var mousePosition;
-        var offset = [0,0];
-        var div;
-        var isDown = false;
-
-        
-        var width = document.getElementById("FurnWidth").value;
-        var length = document.getElementById("FurnLength").value;
-        //This logic will convert the input from ft / in to cm and then px
-        var measurement = document.getElementById("FurnMeasurement").value;
-        switch (measurement) {
-            case "cm":
-                break;
-            case "ft":
-                width = width / 0.032808;
-                length = length / 0.032808;
-                break;
-            case "in":
-                width = width * 12 / 0.032808;
-                length = length * 12 / 0.032808;
-                break;
-        }
-        width = width * 1.5;
-        length = length * 1.5;
-        div = document.createElement("div");
-        div.style.position = "absolute";
-        div.style.width = width + "px";
-        div.style.height = length + "px";
-        div.style.background = "red";
-                
-        document.getElementById("mySpace").append(div);
-
-        div.addEventListener('mousedown', function(e) {
-            isDown = true;
-            offset = [
-                div.offsetLeft - e.clientX,
-                div.offsetTop - e.clientY
-            ];
-        }, true);
-
-        document.addEventListener('mouseup', function() {
-            isDown = false;
-        }, true);
-
-        document.addEventListener('mousemove', function(event) {
-            event.preventDefault();
-            if (isDown) {
-                mousePosition = {
-    
-                    x : event.clientX,
-                    y : event.clientY
-    
-                };
-                div.style.left = (mousePosition.x + offset[0]) + 'px';
-                div.style.top  = (mousePosition.y + offset[1]) + 'px';
+@if (Model != null)
+{
+    if (Model.SpaceDimensions.Width != null && Model.SpaceDimensions.Length != null)
+    {
+        <div id="mySpace" style="display:block;width:@(Model.SpaceDimensions.Width)px; height:@(Model.SpaceDimensions.Length)px;background-color:blue;"></div>
+        <div id="searchFurn" class="spaceForm" >
+            @using (@Html.BeginForm("FurnitureList", "Search", FormMethod.Post))
+            {
+                @Html.Label("SearchQ", "Furniture Type: ")
+                @Html.TextBox("SearchQ", "" , new { @class = "form-control" })
+                <button type="submit" id="button" class="btn-danger button">Search</button>
             }
-        }, true);
+        </div>
+        <div class="items">
+            @if (Model.items.Count > 0)
+            {
+                <form action="../Space/AddFurn" method="post">
+                    @foreach (var m in Model.items)
+                    {
+                        <p>@m.Listing_Id</p>
+                        <p>@m.Title</p>
+                        <p>@m.Url</p>
+                        <p>@m.Price</p>
+                        <p>@m.Currency_Code</p>
+                        <p>@m.Item_Width</p>
+                        <p>@m.Item_Length</p>
+                        <p>@m.Item_Height</p>
+                        <p>@m.Item_Dimensions_unit</p>
+                        <p><img src="@m.ImageThumbUrl" /></p>
+                        @*<button type="submit" name="NewFurn" value="@m">Add</button>*@
+                        @*<p><img src="@m.ImageFullUrl" /></p>*@
+                    }
+                </form>
+
+                if (Model.items != null)
+                {
+                    <form action="../Search/FurnitureList" method="post">
+                        <input type="text" name="SearchQ" value="@ViewBag.SearchQ" hidden />
+                        @if (ViewBag.PrevPage != null)
+                        {
+                            <button type="submit" name="pageNo" value="@ViewBag.PrevPage">Prev</button>
+                        }
+
+                        @if (ViewBag.NextPage != null)
+                        {
+                            <button type="submit" name="pageNo" value="@ViewBag.NextPage">Next</button>
+                        }
+                    </form>
+                    @*if (ViewBag.PrevPage != null)
+                    {
+                        <a href="@Url.Action("FurnitureList", "Search", new { pageNo = ViewBag.PrevPage, searchQ = ViewBag.SearchQ })">Prev</a>
+                    }
+
+                    if (ViewBag.NextPage != null)
+                    {
+                        <a href="@Url.Action("FurnitureList", "Search", new { pageNo = ViewBag.NextPage, searchQ = ViewBag.SearchQ })">Next</a>
+                    }*@
+                }
+            }
+        </div>
     }
-</script>
+}
 
-<div id="mySpace" class="mySpace"></div>
-
-<div id="generateSpace" class="spaceForm">
-        @Html.Label("Width", "Width: ")
-        @Html.TextBox("Width", "", new { @class = "form-control" })
-        @Html.Label("Length", "Length: ")
-        @Html.TextBox("Length", "", new { @class = "form-control" })
-        @Html.Label("Measurement", "Measurement: ")
-        @Html.DropDownList("Measurement",
-                        new SelectList(Enum.GetValues(typeof(TypesOfMeasurement))),
-                        new { @class = "form-control" })
-        <button onclick="DisplayMySpace()">Generate Space</button>
-</div>
-
-<div id="addFurn" class="spaceForm" style="display:none">
-        @Html.Label("FurnWidth", "Width: ")
-        @Html.TextBox("FurnWidth", "", new { @class = "form-control" })
-        @Html.Label("FurnLength", "Length: ")
-        @Html.TextBox("FurnLength", "", new { @class = "form-control" })
-        @Html.Label("FurnMeasurement", "Measurement: ")
-        @Html.DropDownList("FurnMeasurement",
-                        new SelectList(Enum.GetValues(typeof(TypesOfMeasurement))),
-                        new { @class = "form-control" })
-        <button onclick="DisplayFurn()">Add Furniture</button>
-</div>
+@if (Model.SpaceDimensions.Width == null && Model.SpaceDimensions.Length == null)
+{
+    <div style="" id="generateSpace" class="spaceForm">
+        @using (@Html.BeginForm("GenerateSpace", "Space", FormMethod.Post))
+        {
+            @Html.Label("Width", "Width: ")
+            @Html.TextBox("Width", "", new { @class = "form-control" })
+            @Html.Label("Length", "Length: ")
+            @Html.TextBox("Length", "", new { @class = "form-control" })
+            @Html.Label("Measurement", "Measurement: ")
+            @Html.DropDownList("Measurement",
+                            new SelectList(Enum.GetValues(typeof(TypesOfMeasurement))),
+                            new { @class = "form-control" })
+            <button onclick="ChangeForm()">Generate Space</button>
+        }
+    </div>
+}
