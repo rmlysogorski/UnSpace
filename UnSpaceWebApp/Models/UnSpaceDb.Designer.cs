@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\EpikF\Desktop\THE GRAND FINALLY\UnSpace\UnSpaceWebApp\Models\UserSpacesModel.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\Richie\source\repos\UnSpaceWebApp\UnSpaceWebApp\Models\UnSpaceDb.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
