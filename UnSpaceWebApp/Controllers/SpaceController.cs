@@ -12,6 +12,8 @@ namespace UnSpaceWebApp.Controllers
 {
     public class SpaceController : Controller
     {
+
+        UserSpacesEntities ORM = new UserSpacesEntities();
         public static MySpace thisSpace = new MySpace();
         // GET: Space
         public ActionResult Index()
@@ -34,6 +36,18 @@ namespace UnSpaceWebApp.Controllers
             }
             return View(thisSpace);
         }  
+
+        public static string AddToList(List<string> Listing)
+        {
+
+            string listing = string.Empty;
+            for(int i=0;i<Listing.Count; i++)
+            {
+                listing += Listing[i] + ",";
+
+            }
+            return listing;
+        }
 
         public ActionResult GenerateSpace(string Width, string Length, string Measurement)
         {
