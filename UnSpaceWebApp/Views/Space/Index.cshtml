@@ -3,14 +3,70 @@
 @{
     ViewBag.Title = "Let's UnSpace Your Space!";
 }
+    <script type="text/javascript">
+        var count = 0;
+        function DisplayFurn(furnId) {
+            var mousePosition;
+            var offset = [0, 0];
+            var div;
+            var isDown = false;
 
+            div = document.getElementById(furnId);
+            div.style.position = "absolute";
+
+            div.addEventListener('mousedown', function (e) {
+                isDown = true;
+                offset = [
+                    div.offsetLeft - e.clientX,
+                    div.offsetTop - e.clientY
+                ];
+            }, true);
+
+            document.addEventListener('mouseup', function () {
+                isDown = false;
+            }, true);
+
+            document.addEventListener('mousemove', function (event) {
+                event.preventDefault();
+                if (isDown) {
+                    mousePosition = {
+
+                        x: event.clientX,
+                        y: event.clientY
+
+                    };
+                    div.style.left = (mousePosition.x + offset[0]) + 'px';
+                    div.style.top = (mousePosition.y + offset[1]) + 'px';
+                }
+            }, true);
+        }
+    </script>
 <h2>@ViewBag.Title</h2>
 
 @if (Model != null)
 {
     if (Model.SpaceDimensions.Width != null && Model.SpaceDimensions.Length != null)
     {
-        <div id="mySpace" style="display:block;width:@(Model.SpaceDimensions.Width)px; height:@(Model.SpaceDimensions.Length)px;background-color:blue;"></div>
+        <form action="../Space/SaveFurn" method="post">
+            <div id="mySpace" style="display:block;width:@(Model.SpaceDimensions.Width)px; height:@(Model.SpaceDimensions.Length)px;background-color:blue;">
+                @if(Model.furnList.Count > 0)
+                {
+                    for(var i = 0; i < Model.furnList.Count; i++)
+                    {
+                        var furnId = "furn" + i;
+                        <div id="@furnId"><img src="@(Model.furnList[i].ImageThumbUrl)" /></div>
+                        <input name="Listings" type="text" value="@(Model.furnList[i].Listing_Id)" hidden />
+                        <script>
+                            var furnId = 'furn' + count;
+                            count++;
+                            DisplayFurn(furnId);
+                        </script>
+                    }
+                }
+            
+            </div>
+            <button value="submit">Save</button>
+        </form>
         <div id="searchFurn" class="spaceForm" >
             @using (@Html.BeginForm("FurnitureList", "Search", FormMethod.Post))
             {
@@ -22,23 +78,25 @@
         <div class="items">
             @if (Model.items.Count > 0)
             {
-                <form action="../Space/AddFurn" method="post">
-                    @foreach (var m in Model.items)
-                    {
-                        <p>@m.Listing_Id</p>
-                        <p>@m.Title</p>
-                        <p>@m.Url</p>
-                        <p>@m.Price</p>
-                        <p>@m.Currency_Code</p>
-                        <p>@m.Item_Width</p>
-                        <p>@m.Item_Length</p>
-                        <p>@m.Item_Height</p>
-                        <p>@m.Item_Dimensions_unit</p>
-                        <p><img src="@m.ImageThumbUrl" /></p>
-                        @*<button type="submit" name="NewFurn" value="@m">Add</button>*@
-                        @*<p><img src="@m.ImageFullUrl" /></p>*@
-                    }
-                </form>
+            
+                foreach (var m in Model.items)
+                {
+                    <form action="../Space/AddFurn" method="post">
+                        <p>@m.Listing_Id</p> <input type="text" name="Listing_Id" value="@(m.Listing_Id)" hidden />
+                        <p>@m.Title</p> <input type="text" name="Title" value="@(m.Title)" hidden />
+                        <p>@m.Url</p> <input type="text" name="Url" value="@(m.Url)" hidden />
+                        <p>@m.Price</p> <input type="text" name="Price" value="@(m.Price)" hidden />
+                        <p>@m.Currency_Code</p> <input type="text" name="Currency_Code" value="@(m.Currency_Code)" hidden />
+                        @*<p>@m.Item_Width</p> @Html.Hidden(m.Item_Width)
+                        <p>@m.Item_Length</p> @Html.Hidden(m.Item_Length)
+                        <p>@m.Item_Height</p> @Html.Hidden(m.Item_Height)
+                        <p>@m.Item_Dimensions_unit</p> @Html.Hidden(m.Item_Dimensions_unit)*@
+                        <p><img src="@m.ImageThumbUrl" /></p> <input type="text" name="ImageThumbUrl" value="@(m.ImageThumbUrl)" hidden />
+                        @*<p><img src="@m.ImageFullUrl" /></p>*@ <input type="text" name="ImageFullUrl" value="@(m.ImageFullUrl)" hidden />
+                        <button type="submit">Add</button>
+                    </form>
+                }
+            
 
                 if (Model.items != null)
                 {
@@ -54,15 +112,6 @@
                             <button type="submit" name="pageNo" value="@ViewBag.NextPage">Next</button>
                         }
                     </form>
-                    @*if (ViewBag.PrevPage != null)
-                    {
-                        <a href="@Url.Action("FurnitureList", "Search", new { pageNo = ViewBag.PrevPage, searchQ = ViewBag.SearchQ })">Prev</a>
-                    }
-
-                    if (ViewBag.NextPage != null)
-                    {
-                        <a href="@Url.Action("FurnitureList", "Search", new { pageNo = ViewBag.NextPage, searchQ = ViewBag.SearchQ })">Next</a>
-                    }*@
                 }
             }
         </div>
@@ -86,3 +135,4 @@
         }
     </div>
 }
+

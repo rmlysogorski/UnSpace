@@ -179,6 +179,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\SpaceController.cs" />
+    <Compile Include="Controllers\UnSpaceDbController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -189,23 +190,23 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MySpace.cs" />
     <Compile Include="Models\TypesOfMeasurement.cs" />
+    <Compile Include="Models\UnSpaceDb.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnSpaceDb.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UnSpaceDb.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnSpaceDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UnSpaceDb.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnSpaceDb.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\UserSpace.cs">
-      <DependentUpon>UserSpacesModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserSpacesModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UserSpacesModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserSpacesModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UserSpacesModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\UserSpacesModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UserSpacesModel.edmx</DependentUpon>
+      <DependentUpon>UnSpaceDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\WayfairAPIDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -220,25 +221,25 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\UserSpacesModel.Context.tt">
+    <Content Include="Models\UnSpaceDb.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>UserSpacesModel.edmx</DependentUpon>
-      <LastGenOutput>UserSpacesModel.Context.cs</LastGenOutput>
+      <DependentUpon>UnSpaceDb.edmx</DependentUpon>
+      <LastGenOutput>UnSpaceDb.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\UserSpacesModel.tt">
+    <Content Include="Models\UnSpaceDb.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>UserSpacesModel.edmx</DependentUpon>
-      <LastGenOutput>UserSpacesModel.cs</LastGenOutput>
+      <DependentUpon>UnSpaceDb.edmx</DependentUpon>
+      <LastGenOutput>UnSpaceDb.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="libman.json" />
-    <EntityDeploy Include="Models\UserSpacesModel.edmx">
+    <EntityDeploy Include="Models\UnSpaceDb.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>UserSpacesModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>UnSpaceDb.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\UserSpacesModel.edmx.diagram">
-      <DependentUpon>UserSpacesModel.edmx</DependentUpon>
+    <Content Include="Models\UnSpaceDb.edmx.diagram">
+      <DependentUpon>UnSpaceDb.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -297,6 +298,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\UnSpaceDb\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
