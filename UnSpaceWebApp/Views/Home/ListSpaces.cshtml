@@ -1,4 +1,4 @@
-﻿@*@*@*@*@Model
+﻿@model List<UnSpaceWebApp.Models.MySpace>
 
     @{
         ViewBag.Title = "ListSpaces";
@@ -13,23 +13,36 @@
         <table>
 
             <tr>
-                <th>@User.Identity.Name, here are your favorites below</th>
+                <p>@User.Identity.Name, here are your favorites below</p>
             </tr>
-            @foreach (var fav in  )
+            @*first loop enters the model
+            second one accesse the list withing each object*@
+            @foreach (var fave in Model)
             {
-                <tr>
-                    <td>
 
-                    </td>
-                </tr>
+                <th>
+                    @*\\another loop to go through furnlist*@
+                    @foreach (var fav in fave.furnList)
+                    {
+                        <p>Title</p> @fav.Title
+                        <p>2. Price</p> @fav.Price
+                        <p>3. Id</p>@fav.Listing_Id
+                        <p>4. Product url</p> @fav.Url
+                        <p>5. Dimension Width</p> @fav.Item_Width
+                        <p>6. Dimension Length</p> @fav.Item_Length
+                        <p>7. Dimension Height</p> @fav.Item_Height
+                        <p>8. Dimension Unit</p> @fav.Item_Dimensions_unit
+                        <p>9. Full Image URL</p> @fav.ImageFullUrl
+                    }
+                </th>
             }
-
-
         </table>
-    </div>*@
+        <form action="/Home/QRCode" method="get">
+            <input type="text" name="incomingUrl" />
+            <input type="submit" value="get qr code" />
 
-    <form action="/Home/QRCode" method="get">
-        <input type="text" name="incomingUrl" />
-        <input type="submit" value="get qr code" />
+        </form>
 
-    </form>
+    </div>
+
+   
