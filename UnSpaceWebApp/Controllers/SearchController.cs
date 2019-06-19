@@ -37,7 +37,7 @@ namespace UnSpaceWebApp.Models
                         SearchQ += "&page=" + pageNo;
                     }
                 }
-                JObject data = EtsyDAL.GetEtsyAPI("&limit=5&category=furniture&keywords=" + SearchQ, "active");
+                JObject data = EtsyDAL.GetEtsyAPI(" &limit=5&category=furniture&keywords=" + SearchQ, "active");
                 if (SearchQ.Contains('&'))
                 {
                     TempData["SearchQ"] = SearchQ.Split('&')[0];

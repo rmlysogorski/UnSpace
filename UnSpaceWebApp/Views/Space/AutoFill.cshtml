@@ -1,0 +1,30 @@
+﻿@model List<UnSpaceWebApp.Models.EtsyItem>
+
+@{
+    ViewBag.Title = "AutoFill";
+}
+
+<h2>AutoFill</h2>
+
+<div class="items">
+
+
+    @foreach (var m in Model)
+    {
+        <p>@m.Listing_Id</p>
+        <p>@m.Title</p>
+        <p>@m.Url</p>
+        <p>@m.Price</p>
+        <p>@m.Currency_Code</p>
+        <p>@m.Item_Width</p>
+        <p>@m.Item_Length</p>
+        <p>@m.Item_Height</p>
+        <p>@m.Item_Dimensions_unit</p>
+        <p><img src="@m.ImageThumbUrl" /></p>
+        
+    }
+
+
+
+
+</div>
