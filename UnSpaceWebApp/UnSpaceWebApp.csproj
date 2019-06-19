@@ -187,6 +187,7 @@
     <Compile Include="Models\EtsyItem.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MySpace.cs" />
     <Compile Include="Models\TypesOfMeasurement.cs" />
     <Compile Include="Models\UserSpace.cs">
       <DependentUpon>UserSpacesModel.tt</DependentUpon>
@@ -286,11 +287,13 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Space\Index.cshtml" />
+    <Content Include="Views\Space\IndexOld.cshtml" />
     <Content Include="Views\Home\ListSpaces.cshtml" />
     <Content Include="Views\Search\Index.cshtml" />
     <Content Include="Views\Search\ProductList.cshtml" />
     <Content Include="Views\Home\QRCode.cshtml" />
+    <Content Include="Views\Search\FurnitureList.cshtml" />
+    <Content Include="Views\Space\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

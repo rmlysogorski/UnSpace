@@ -1,15 +1,4 @@
 ﻿@model List<UnSpaceWebApp.Models.EtsyItem>
-@{
-    ViewBag.Title = "Index";
-}
-
-<h2>Index</h2>
-
-<form action="../Search/ProductList" method="post">
-    <input type="text" name="searchQ" placeholder="Type of Furniture" />
-    <input type="submit" value="Submit" class="btn-danger" />
-</form>
-
 @if (Model != null)
 {
     foreach (var m in Model)
@@ -41,3 +30,4 @@
         <a href="@Url.Action("SearchPage", "Search", new { pageNo = ViewBag.NextPage, searchQ = ViewBag.SearchQ })">Next</a>
     }
 }
+
