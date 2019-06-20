@@ -296,6 +296,7 @@
     <Content Include="Views\Search\FurnitureList.cshtml" />
     <Content Include="Views\Space\Index.cshtml" />
     <Content Include="Views\Space\AutoFill.cshtml" />
+    <Content Include="Views\Home\Favorites.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

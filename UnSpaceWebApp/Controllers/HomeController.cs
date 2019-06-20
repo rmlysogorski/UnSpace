@@ -20,6 +20,10 @@ namespace UnSpaceWebApp.Controllers
         {
             return View();
         }
+        public ActionResult Favorites()
+        {
+            return View();
+        }
         public ActionResult QRCode(string incomingUrl)
         {
             QRCodeGenerator qrGenerator = new QRCodeGenerator();

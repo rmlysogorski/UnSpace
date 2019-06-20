@@ -18,7 +18,6 @@ namespace UnSpaceWebApp.Models
             public string Width { get; set; }
             public string Length { get; set; }
             public string Measurement { get; set; }
-
         }
 
         
