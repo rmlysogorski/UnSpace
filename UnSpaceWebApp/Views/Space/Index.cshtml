@@ -40,6 +40,16 @@
                 }
             }, true);
         }
+
+        function GetPositions() {
+            for (var i = 0; i < count; i++) {
+                var idLeft = "pos" + i + "Left";
+                var idTop = "pos" + i + "Top";
+                var furnId = "furn" + i;
+                document.getElementById(idLeft).value = document.getElementById(furnId).style.left;
+                document.getElementById(idTop).value = document.getElementById(furnId).style.top;
+            }
+        }
     </script>
 <h2>@ViewBag.Title</h2>
 
@@ -47,26 +57,43 @@
 {
     if (Model.SpaceDimensions.Width != null && Model.SpaceDimensions.Length != null)
     {
-        <form action="../Space/SaveFurn" method="post">
-            <div id="mySpace" style="display:block;width:@(Model.SpaceDimensions.Width)px; height:@(Model.SpaceDimensions.Length)px;background-color:blue;">
-                @if(Model.furnList.Count > 0)
+        
+            <div id="mySpace" style="position:relative;display:block;width:@(Model.SpaceDimensions.Width)px; height:@(Model.SpaceDimensions.Length)px;background-color:blue;">
+                @if (Model.furnList.Count > 0)
                 {
-                    for(var i = 0; i < Model.furnList.Count; i++)
+                    for (var i = 0; i < Model.furnList.Count; i++)
                     {
                         var furnId = "furn" + i;
-                        <div id="@furnId"><img src="@(Model.furnList[i].ImageThumbUrl)" /></div>
-                        <input name="Listings" type="text" value="@(Model.furnList[i].Listing_Id)" hidden />
+                        <form action="../Space/RemoveFurn" method="post">
+                            <div style="left:10px;top:10px;" id="@furnId"><button style="float:left;display:inline-block;position:absolute">X</button><img src="@(Model.furnList[i].ImageThumbUrl)" /></div>
+                            <input name="Index" type="text" value="@(i)" hidden />
+                        </form>                       
                         <script>
                             var furnId = 'furn' + count;
                             count++;
                             DisplayFurn(furnId);
+
                         </script>
                     }
-                }
-            
+                }            
             </div>
-            <button value="submit">Save</button>
-        </form>
+            <div>
+                <form action="../Space/SaveFurn" method="post">
+                    @if (Model.furnList.Count > 0)
+                    {
+                        for (var i = 0; i < Model.furnList.Count; i++)
+                        {
+                            var posIdLeft = "pos" + i + "Left";
+                            var posIdTop = "pos" + i + "Top";
+                            <input id="@(posIdLeft)" name="Left" type="text" hidden />
+                            <input id="@(posIdTop)" name="Top" type="text" hidden />
+                            <input name="Listings" type="text" value="@(Model.furnList[i].Listing_Id)" hidden />
+                        }
+                    }
+                    <button onclick="GetPositions()" value="submit">Save</button>
+                </form>
+            </div>
+        
         <div id="searchFurn" class="spaceForm" >
             @using (@Html.BeginForm("FurnitureList", "Search", FormMethod.Post))
             {

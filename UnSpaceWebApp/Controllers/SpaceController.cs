@@ -123,7 +123,7 @@ namespace UnSpaceWebApp.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult SaveFurn(List<string> Listings)
+        public ActionResult SaveFurn(List<string> Listings, List<string> Left, List<string> Top)
         {
             if (TempData["prevPage"] != null)
             {
@@ -137,6 +137,8 @@ namespace UnSpaceWebApp.Controllers
             {
                 TempData["SearchQ"] = TempData["SearchQ"];
             }
+            string left = Left[0];
+            string top = Top[0];
             UserSpace userSpace = new UserSpace();
             userSpace.UserId = User.Identity.Name;
             userSpace.Listing = GenerateListingString(Listings);
@@ -175,6 +177,24 @@ namespace UnSpaceWebApp.Controllers
                 System.Threading.Thread.Sleep(500);
             }
             return userItems;
+        }
+
+        public ActionResult RemoveFurn(string Index)
+        {
+            if (TempData["prevPage"] != null)
+            {
+                TempData["prevPage"] = TempData["prevPage"];
+            }
+            if (TempData["nextPage"] != null)
+            {
+                TempData["nextPage"] = TempData["nextPage"];
+            }
+            if (TempData["SearchQ"] != null)
+            {
+                TempData["SearchQ"] = TempData["SearchQ"];
+            }
+            thisSpace.furnList.RemoveAt(int.Parse(Index));
+            return RedirectToAction("Index");
         }
     }
 }
