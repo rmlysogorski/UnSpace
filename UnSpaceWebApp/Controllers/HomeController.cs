@@ -22,7 +22,20 @@ namespace UnSpaceWebApp.Controllers
         }
         public ActionResult Favorites()
         {
-            return View();
+            SpaceController sc = new SpaceController();
+            List < UserSpace > userSpaces = UnSpaceDbController.GetUserSpaces(User.Identity.Name);
+            List<MySpace> mySpaces = new List<MySpace>();
+            int count = 0;
+            foreach(UserSpace u in userSpaces)
+            {
+                MySpace addSpace = new MySpace();
+                addSpace.Name = u.Name;
+                addSpace.furnList = sc.GetSavedSpace(u);
+                addSpace.Id = u.Id.ToString();
+                mySpaces.Add(addSpace);
+                count++;
+            }
+            return View(mySpaces);
         }
         public ActionResult QRCode(string incomingUrl)
         {

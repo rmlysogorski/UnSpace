@@ -60,17 +60,7 @@ namespace UnSpaceWebApp.Models
                 {
                     EtsyItem newItem = new EtsyItem();
                     newItem.Listing_Id = data["results"][i]["listing_id"].ToString();
-                    newItem.Title = data["results"][i]["title"].ToString();
-                    newItem.Url = data["results"][i]["url"].ToString();
-                    newItem.Price = data["results"][i]["price"].ToString();
-                    newItem.Item_Width = data["results"][i]["item_width"].ToString();
-                    newItem.Item_Length = data["results"][i]["item_length"].ToString();
-                    newItem.Item_Height = data["results"][i]["item_height"].ToString();
-                    newItem.Item_Dimensions_unit = data["results"][i]["item_dimensions_unit"].ToString();
-                    newItem.Currency_Code = data["results"][i]["currency_code"].ToString();
-                    JObject imageData = EtsyDAL.GetEtsyAPI(newItem.Listing_Id, "image");
-                    newItem.ImageThumbUrl = imageData["results"][0]["url_75x75"].ToString();
-                    newItem.ImageFullUrl = imageData["results"][0]["url_fullxfull"].ToString();
+                    newItem = EtsyDAL.MakeEtsyItem(newItem.Listing_Id);
                     items.Add(newItem);
                     System.Threading.Thread.Sleep(500);
                 }

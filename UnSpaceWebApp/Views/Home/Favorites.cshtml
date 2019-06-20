@@ -1,14 +1,31 @@
-﻿@model List<UnSpaceWebApp.Models.EtsyItem>
+﻿@model List<UnSpaceWebApp.Models.MySpace>
 @{
     ViewBag.Title = "Favorites";
 }
 
 <h2>Favorites</h2>
 
-@foreach (var product in Model)
+@if(Model != null)
 {
-        <div class="col-md-3" id="FavoritesView">
-            
+    <form action="../Space/Index" method="post">
+        @for(var i=0; i < Model.Count; i++)
+        {
+            <div class="col-md-3">
+                <h2><button name="Id" type="submit" value="@Model[i].Id">@Model[i].Name</button></h2>
+                @foreach(var f in Model[i].furnList)
+                {
+                    <p><a href="@f.Url">@f.Title</a></p>
+                    <p>@f.Price @f.Currency_Code</p>
+                    <p><img src="@f.ImageThumbUrl" /></p>
+                }
+            </div>
+        }
+    </form>
+}
+
+@*@foreach (var product in Model)
+{
+        <div class="col-md-3" id="FavoritesView">            
 
             <div class="dropdown">
                 <button onclick="myFunction()" class="dropbtn">Name</button>
@@ -33,7 +50,7 @@
 
 
         </div>
-}
+}*@
 
         
     

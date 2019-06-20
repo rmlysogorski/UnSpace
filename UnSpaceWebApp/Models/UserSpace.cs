@@ -18,5 +18,6 @@ namespace UnSpaceWebApp.Models
         public string UserId { get; set; }
         public string Listing { get; set; }
         public string QRCode { get; set; }
+        public string Name { get; set; }
     }
 }

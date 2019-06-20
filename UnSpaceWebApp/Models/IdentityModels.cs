@@ -21,7 +21,7 @@ namespace UnSpaceWebApp.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("UnSpaceDbEntities", throwIfV1Schema: false)
+            : base("UnSpaceDb", throwIfV1Schema: false)
         {
         }
 
