@@ -13,10 +13,10 @@ namespace UnSpaceWebApp.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class UnSpaceDb : DbContext
+    public partial class UnSpaceDbEntities : DbContext
     {
-        public UnSpaceDb()
-            : base("name=UnSpaceDb")
+        public UnSpaceDbEntities()
+            : base("name=UnSpaceDbEntities")
         {
         }
     

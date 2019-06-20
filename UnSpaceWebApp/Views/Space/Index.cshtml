@@ -90,6 +90,8 @@
                             <input name="Listings" type="text" value="@(Model.furnList[i].Listing_Id)" hidden />
                         }
                     }
+                    @Html.Label("Name", "Name Your Space: ")
+                    @Html.TextBox("Name", "", new { @class = "form-control" })
                     <button onclick="GetPositions()" value="submit">Save</button>
                 </form>
             </div>

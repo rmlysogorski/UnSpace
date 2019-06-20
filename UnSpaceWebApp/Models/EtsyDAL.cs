@@ -46,5 +46,31 @@ namespace UnSpaceWebApp.Models
                 return null;
             }
         }
+
+        public static EtsyItem MakeEtsyItem(string Listing_Id)
+        {
+            EtsyItem newItem = new EtsyItem();
+            newItem.Listing_Id = Listing_Id;
+            JObject data = GetEtsyAPI(Listing_Id, "listing");
+            if (data["results"][0]["state"].ToString() != "sold_out")
+            {
+                newItem.Title = data["results"][0]["title"].ToString();
+                if (newItem.Title.Contains('&'))
+                {
+                    newItem.Title.Replace("&", "&amp;");
+                }
+                newItem.Url = data["results"][0]["url"].ToString();
+                newItem.Price = data["results"][0]["price"].ToString();
+                newItem.Item_Width = data["results"][0]["item_width"].ToString();
+                newItem.Item_Length = data["results"][0]["item_length"].ToString();
+                newItem.Item_Height = data["results"][0]["item_height"].ToString();
+                newItem.Item_Dimensions_unit = data["results"][0]["item_dimensions_unit"].ToString();
+                newItem.Currency_Code = data["results"][0]["currency_code"].ToString();
+                JObject imageData = GetEtsyAPI(newItem.Listing_Id, "image");
+                newItem.ImageThumbUrl = imageData["results"][0]["url_75x75"].ToString();
+                newItem.ImageFullUrl = imageData["results"][0]["url_fullxfull"].ToString();
+            }
+            return newItem;
+        }
     }
 }

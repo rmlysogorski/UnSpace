@@ -14,8 +14,15 @@ namespace UnSpaceWebApp.Controllers
     {
         public static MySpace thisSpace = new MySpace();
         // GET: Space
-        public ActionResult Index()
+        public ActionResult Index(string Id)
         {
+            if(Id != null)
+            {
+                UserSpace userSpace = UnSpaceDbController.GetThisUserSpace(Id);
+                thisSpace.furnList = GetSavedSpace(userSpace);
+                thisSpace.Id = Id;
+                thisSpace.Name = userSpace.Name;
+            }
             if(TempData["items"] != null)
             {
                 thisSpace.items = (List<EtsyItem>)TempData["items"];
@@ -123,7 +130,7 @@ namespace UnSpaceWebApp.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult SaveFurn(List<string> Listings, List<string> Left, List<string> Top)
+        public ActionResult SaveFurn(List<string> Listings, List<string> Left, List<string> Top, string Name)
         {
             if (TempData["prevPage"] != null)
             {
@@ -142,41 +149,47 @@ namespace UnSpaceWebApp.Controllers
             UserSpace userSpace = new UserSpace();
             userSpace.UserId = User.Identity.Name;
             userSpace.Listing = GenerateListingString(Listings);
+            userSpace.Name = Name;
             return RedirectToAction("SaveUserSpace", "UnSpaceDb", userSpace);
         }
 
-        public List<EtsyItem> GetSavedSpace(int id)
-        {
-            UnSpaceDbController uc = new UnSpaceDbController();
-            List<UserSpace> userSpaces = uc.GetUserSpaces();
-            UserSpace thisUserSpace = userSpaces.Find(u => u.Id == id);
+        public List<EtsyItem> GetSavedSpace(UserSpace thisUserSpace)
+        {   
             List<EtsyItem> userItems = new List<EtsyItem>();
-            int count = 0;
-            foreach(string listing in thisUserSpace.Listing.Split(','))
+            foreach (string listing in thisUserSpace.Listing.Split(','))
             {
-                if(listing != string.Empty)
+                if (listing != string.Empty)
                 {
-                    userItems[count].Listing_Id = listing;
+                    EtsyItem newItem = new EtsyItem();
+                    newItem.Listing_Id = listing;
+                    userItems.Add(newItem);
                 }
             }
-            foreach(EtsyItem e in userItems)
+
+            List<EtsyItem> returnList = new List<EtsyItem>();
+            foreach (EtsyItem e in userItems)
             {
                 EtsyItem newItem = new EtsyItem();
+                newItem.Listing_Id = e.Listing_Id;
                 JObject data = EtsyDAL.GetEtsyAPI(e.Listing_Id, "listing");
-                newItem.Title = data["results"][0]["title"].ToString();
-                newItem.Url = data["results"][0]["url"].ToString();
-                newItem.Price = data["results"][0]["price"].ToString();
-                newItem.Item_Width = data["results"][0]["item_width"].ToString();
-                newItem.Item_Length = data["results"][0]["item_length"].ToString();
-                newItem.Item_Height = data["results"][0]["item_height"].ToString();
-                newItem.Item_Dimensions_unit = data["results"][0]["item_dimensions_unit"].ToString();
-                newItem.Currency_Code = data["results"][0]["currency_code"].ToString();
-                JObject imageData = EtsyDAL.GetEtsyAPI(newItem.Listing_Id, "image");
-                newItem.ImageThumbUrl = imageData["results"][0]["url_75x75"].ToString();
-                newItem.ImageFullUrl = imageData["results"][0]["url_fullxfull"].ToString();
+                if(data["results"][0]["state"].ToString() != "sold_out")
+                {
+                    newItem.Title = data["results"][0]["title"].ToString();
+                    newItem.Url = data["results"][0]["url"].ToString();
+                    newItem.Price = data["results"][0]["price"].ToString();
+                    newItem.Item_Width = data["results"][0]["item_width"].ToString();
+                    newItem.Item_Length = data["results"][0]["item_length"].ToString();
+                    newItem.Item_Height = data["results"][0]["item_height"].ToString();
+                    newItem.Item_Dimensions_unit = data["results"][0]["item_dimensions_unit"].ToString();
+                    newItem.Currency_Code = data["results"][0]["currency_code"].ToString();
+                    JObject imageData = EtsyDAL.GetEtsyAPI(newItem.Listing_Id, "image");
+                    newItem.ImageThumbUrl = imageData["results"][0]["url_75x75"].ToString();
+                    newItem.ImageFullUrl = imageData["results"][0]["url_fullxfull"].ToString();
+                }                
+                returnList.Add(newItem);
                 System.Threading.Thread.Sleep(500);
             }
-            return userItems;
+            return returnList;
         }
 
         public ActionResult RemoveFurn(string Index)

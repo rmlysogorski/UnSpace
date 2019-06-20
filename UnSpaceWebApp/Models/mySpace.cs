@@ -7,6 +7,9 @@ namespace UnSpaceWebApp.Models
 {
     public class MySpace
     {
+        public string Name { get; set; }
+        public string Id { get; set; }
+
         public spaceDimensions SpaceDimensions = new spaceDimensions();
 
         public List<EtsyItem> items = new List<EtsyItem>(); //Grabs the current page's items from the API

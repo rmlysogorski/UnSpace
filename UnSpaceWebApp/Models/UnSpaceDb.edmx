@@ -13,6 +13,7 @@
           <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Listing" Type="nvarchar(max)" />
           <Property Name="QRCode" Type="nvarchar(max)" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityContainer Name="UnSpaceDbModelStoreContainer">
           <EntitySet Name="UserSpaces" EntityType="Self.UserSpaces" Schema="dbo" store:Type="Tables" />
@@ -30,8 +31,9 @@
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Listing" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="QRCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityContainer Name="UnSpaceDb" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="UnSpaceDbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="UserSpaces" EntityType="Self.UserSpace" />
         </EntityContainer>
       </Schema>
@@ -39,7 +41,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="UnSpaceDbModelStoreContainer" CdmEntityContainer="UnSpaceDb">
+        <EntityContainerMapping StorageEntityContainer="UnSpaceDbModelStoreContainer" CdmEntityContainer="UnSpaceDbEntities">
           <EntitySetMapping Name="UserSpaces">
             <EntityTypeMapping TypeName="UnSpaceDbModel.UserSpace">
               <MappingFragment StoreEntitySet="UserSpaces">
@@ -47,6 +49,7 @@
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Listing" ColumnName="Listing" />
                 <ScalarProperty Name="QRCode" ColumnName="QRCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
