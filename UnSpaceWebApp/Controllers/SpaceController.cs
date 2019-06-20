@@ -51,35 +51,33 @@ namespace UnSpaceWebApp.Controllers
         }
 
         public ActionResult AutoFill()
-        {
-           
+        {           
             List<EtsyItem> items = new List<EtsyItem>();
+            Random randomPage = new Random();
+
+            JObject data = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0,2005)}&category=furniture&keywords=" + "table", "active");
+            Random randomResult = new Random();
+            int randomo = randomResult.Next(0, 25);
+
+            EtsyItem newItem = new EtsyItem();
+            newItem.Listing_Id = data["results"][randomo]["listing_id"].ToString();
+
+            JObject data2 = EtsyDAL.GetEtsyAPI($"{newItem.Listing_Id}", "listing");
+
+            newItem.Title = data["results"][randomo]["title"].ToString();
+            newItem.Url = data["results"][randomo]["url"].ToString();
+            newItem.Price = data["results"][randomo]["price"].ToString();
+            newItem.Item_Width = data2["results"][0]["item_width"].ToString();
+            newItem.Item_Length = data2["results"][0]["item_length"].ToString();
+            newItem.Item_Height = data2["results"][0]["item_height"].ToString();
+            newItem.Item_Dimensions_unit = data["results"][randomo]["item_dimensions_unit"].ToString();
+            newItem.Currency_Code = data["results"][randomo]["currency_code"].ToString();
+            JObject imageData = EtsyDAL.GetEtsyAPI(newItem.Listing_Id, "image");
+            newItem.ImageThumbUrl = imageData["results"][0]["url_75x75"].ToString();
+            newItem.ImageFullUrl = imageData["results"][0]["url_fullxfull"].ToString();
+            items.Add(newItem);            
             
-            JObject data = EtsyDAL.GetEtsyAPI("&category=furniture&keywords=" + "table", "active");
-
-            Random table = new Random();
-
-            for (int i = 0; i < data["results"].Count(); i++)
-            {
-                EtsyItem newItem = new EtsyItem();
-                newItem.Listing_Id = data["results"][i]["listing_id"].ToString();
-                newItem.Title = data["results"][i]["title"].ToString();
-                newItem.Url = data["results"][i]["url"].ToString();
-                newItem.Price = data["results"][i]["price"].ToString();
-                newItem.Item_Width = data["results"][i]["item_width"].ToString();
-                newItem.Item_Length = data["results"][i]["item_length"].ToString();
-                newItem.Item_Height = data["results"][i]["item_height"].ToString();
-                newItem.Item_Dimensions_unit = data["results"][i]["item_dimensions_unit"].ToString();
-                newItem.Currency_Code = data["results"][i]["currency_code"].ToString();
-                JObject imageData = EtsyDAL.GetEtsyAPI(newItem.Listing_Id, "image");
-                newItem.ImageThumbUrl = imageData["results"][0]["url_75x75"].ToString();
-                newItem.ImageFullUrl = imageData["results"][0]["url_fullxfull"].ToString();
-                items.Add(newItem);
-            }
-
-            
-            return View();
-
+            return View(items);
         }
 
 
