@@ -7,7 +7,7 @@ using UnSpaceWebApp.Models;
 using System.Net;
 using System.IO;
 using Newtonsoft.Json.Linq;
-
+using UnSpaceWebApp.Controllers;
 
 namespace UnSpaceWebApp.Models
 {
@@ -25,8 +25,9 @@ namespace UnSpaceWebApp.Models
         }
 
         [HttpPost]
-        public ActionResult FurnitureList(string SearchQ, string pageNo = "")
+        public ActionResult FurnitureList( List<string> Left, List<string> Top, string SearchQ, string pageNo = "")
         {
+            SpaceController.SavePositions(Left, Top);
             List<EtsyItem> items = new List<EtsyItem>();
             if (SearchQ != null)
             {   
@@ -69,8 +70,9 @@ namespace UnSpaceWebApp.Models
             return RedirectToAction("Index", "Space");
         }
 
-        public ActionResult SearchPage(int pageNo, string searchQ)
+        public ActionResult SearchPage(int pageNo, string searchQ, List<string> Left, List<string> Top)
         {
+            SpaceController.SavePositions(Left, Top);
             string newSearchQ = searchQ;
             if (pageNo > 1)
             {
