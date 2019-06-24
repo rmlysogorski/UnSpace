@@ -27,12 +27,13 @@ namespace UnSpaceWebApp.Controllers
             {
                 TempData["SearchQ"] = TempData["SearchQ"];
             }
-            UserSpace result = ORM.UserSpaces.SingleOrDefault(u => u.UserId == userSpace.UserId && u.Listing == userSpace.Listing);
+            UserSpace result = ORM.UserSpaces.SingleOrDefault(u => u.UserId == userSpace.UserId && u.Name == userSpace.Name);
             if (result != null)
             {
                 result.Listing = userSpace.Listing;
                 result.QRCode = userSpace.QRCode;
                 result.Name = userSpace.Name;
+                result.SpaceDimensions = userSpace.SpaceDimensions;
                 ORM.SaveChanges();
             }
             else

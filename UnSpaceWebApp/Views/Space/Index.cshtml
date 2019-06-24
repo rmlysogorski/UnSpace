@@ -42,138 +42,201 @@
     }
 
     function GetPositions() {
-        for (var i = 0; i < count; i++) {
+        //var leftList = document.getElementsByName("Left");
+        //var topList = document.getElementsByName("Top");
+        console.log(count);
+        var i;
+        for (i = 0; i <= count; i++) {
+            console.log("i: " + i);
             var idLeft = "pos" + i + "Left";
             var idTop = "pos" + i + "Top";
             var furnId = "furn" + i;
-            document.getElementById(idLeft).value = document.getElementById(furnId).style.left;
-            document.getElementById(idTop).value = document.getElementById(furnId).style.top;
+            var listLeft = document.getElementsByClassName(idLeft);
+            console.log("listLeft: " + listLeft.length);
+            var listTop = document.getElementsByClassName(idTop);
+            var j;
+            for (j = 0; j < listLeft.length; j++) {
+                console.log("j: " + j);
+                listLeft[j].value = document.getElementById(furnId).style.left;
+                listTop[j].value = document.getElementById(furnId).style.top;
+            }
+            //leftList[i].value = document.getElementById(furnId).style.left;
+            //topList[i].value = document.getElementById(furnId).style.top;
+            //document.getElementsByClassName(idLeft).forEach(Element => { Element.value = document.getElementById(furnId).style.left });
+            //document.getElementsByClassName(idTop).forEach(Element => { Element.value = document.getElementById(furnId).style.top });
+
+            //This one works when there's only 1 form input to change =>
+            //document.getElementById(idLeft).value = document.getElementById(furnId).style.left;
+            //document.getElementById(idTop).value = document.getElementById(furnId).style.top;
         }
     }
 </script>
-<h2>@ViewBag.Title</h2>
+<div style="padding:15px;margin:0 auto;background-color:whitesmoke;width:auto;display:block;text-align:center;box-shadow:0 0 2px gray;border:2px solid #4169e1">
+    <h2>@ViewBag.Title</h2>
+    <br />
+    <div style="display:block;">
 
-@if (Model != null)
-{
-    if (Model.SpaceDimensions.Width != null && Model.SpaceDimensions.Length != null)
-    {
-
-        <div id="mySpace" style="position:relative;display:block;width:@(Model.SpaceDimensions.Width)px; height:@(Model.SpaceDimensions.Length)px;background-color:blue;">
-            @if (Model.furnList.Count > 0)
-            {
-                for (var i = 0; i < Model.furnList.Count; i++)
-                {
-                    var furnId = "furn" + i;
-                    <form action="../Space/RemoveFurn" method="post">
-                        <div style="left:10px;top:10px;" id="@furnId"><button style="float:left;display:inline-block;position:absolute">X</button><img src="@(Model.furnList[i].ImageThumbUrl)" /></div>
-                        <input name="Index" type="text" value="@(i)" hidden />
-                    </form>
-                    <script>
-                        var furnId = 'furn' + count;
-                        count++;
-                        DisplayFurn(furnId);
-
-
-/**/</script>
-                }
-            }
-        </div>
-        <div>
-            <form action="../Space/SaveFurn" method="post">
-                @if (Model.furnList.Count > 0)
-                {
-                    for (var i = 0; i < Model.furnList.Count; i++)
-                    {
-                        var posIdLeft = "pos" + i + "Left";
-                        var posIdTop = "pos" + i + "Top";
-                        <input id="@(posIdLeft)" name="Left" type="text" hidden />
-                        <input id="@(posIdTop)" name="Top" type="text" hidden />
-                        <input name="Listings" type="text" value="@(Model.furnList[i].Listing_Id)" hidden />
-                    }
-                }
-                @Html.Label("Name", "Name Your Space: ")
-                @Html.TextBox("Name", "", new { @class = "form-control" })
-                <button onclick="GetPositions()" value="submit">Save</button>
-            </form>
-        </div>
-
-        <div id="searchFurn" class="spaceForm">
-            @using (@Html.BeginForm("FurnitureList", "Search", FormMethod.Post))
-            {
-                @Html.Label("SearchQ", "Furniture Type: ")
-                @Html.TextBox("SearchQ", "", new { @class = "form-control" })
-                <button type="submit" id="button" class="btn-danger button">Search</button>
-            }
-        </div>
-
-        <form action="..\Space\Autofill" method="post">
-            <div>
-                <button type="submit" value="Living Room" name="benjamin" class="btn-danger">Living Room AutoFill</button>
-                <button type="submit" value="Bed Room" name="benjamin" class="btn-danger">Bed Room AutoFill</button>
-                <button type="submit" value="Dinning Room" name="benjamin" class="btn-danger">Dinning Room AutoFill</button><br />
-                <button type="submit" value="Kitchen" name="benjamin" class="btn-danger">Kitchen AutoFill</button>
-                <button type="submit" value="Finished Basement" name="benjamin" class="btn-danger">Finished Basement AutoFill</button>
-            </div>
-        </form>
-
-        <div class="items">
-            @if (Model.items.Count > 0)
-            {
-
-                foreach (var m in Model.items)
-                {
-                    <form action="../Space/AddFurn" method="post">
-                        <p>@m.Listing_Id</p> <input type="text" name="Listing_Id" value="@(m.Listing_Id)" hidden />
-                        <p>@m.Title</p> <input type="text" name="Title" value="@(m.Title)" hidden />
-                        <p>@m.Url</p> <input type="text" name="Url" value="@(m.Url)" hidden />
-                        <p>@m.Price</p> <input type="text" name="Price" value="@(m.Price)" hidden />
-                        <p>@m.Currency_Code</p> <input type="text" name="Currency_Code" value="@(m.Currency_Code)" hidden />
-                        @*<p>@m.Item_Width</p> @Html.Hidden(m.Item_Width)
-                            <p>@m.Item_Length</p> @Html.Hidden(m.Item_Length)
-                            <p>@m.Item_Height</p> @Html.Hidden(m.Item_Height)
-                            <p>@m.Item_Dimensions_unit</p> @Html.Hidden(m.Item_Dimensions_unit)*@
-                        <p><img src="@m.ImageThumbUrl" /></p> <input type="text" name="ImageThumbUrl" value="@(m.ImageThumbUrl)" hidden />
-                        @*<p><img src="@m.ImageFullUrl" /></p>*@ <input type="text" name="ImageFullUrl" value="@(m.ImageFullUrl)" hidden />
-                        <button type="submit">Add</button>
-                    </form>
-                }
-
-
-                if (Model.items != null)
-                {
-                    <form action="../Search/FurnitureList" method="post">
-                        <input type="text" name="SearchQ" value="@ViewBag.SearchQ" hidden />
-                        @if (ViewBag.PrevPage != null)
-                        {
-                            <button type="submit" name="pageNo" value="@ViewBag.PrevPage">Prev</button>
-                        }
-
-                        @if (ViewBag.NextPage != null)
-                        {
-                            <button type="submit" name="pageNo" value="@ViewBag.NextPage">Next</button>
-                        }
-                    </form>
-                }
-            }
-        </div>
-    }
-}
-
-@if (Model.SpaceDimensions.Width == null && Model.SpaceDimensions.Length == null)
-{
-    <div style="" id="generateSpace" class="spaceForm">
-        @using (@Html.BeginForm("GenerateSpace", "Space", FormMethod.Post))
+        @if (Model != null)
         {
-            @Html.Label("Width", "Width: ")
-            @Html.TextBox("Width", "", new { @class = "form-control" })
-            @Html.Label("Length", "Length: ")
-            @Html.TextBox("Length", "", new { @class = "form-control" })
-            @Html.Label("Measurement", "Measurement: ")
-            @Html.DropDownList("Measurement",
-                            new SelectList(Enum.GetValues(typeof(TypesOfMeasurement))),
-                            new { @class = "form-control" })
-            <button onclick="ChangeForm()">Generate Space</button>
+            if (Model.SpaceDimensions.Width != null && Model.SpaceDimensions.Length != null)
+            {
+
+                <div id="mySpace" style="margin:0 auto;position:relative;display:block;width:@(Model.SpaceDimensions.Width)px; height:@(Model.SpaceDimensions.Length)px;background-color:whitesmoke;border:1px dashed black;">
+                    @if (Model.furnList.Count > 0)
+                    {
+                        for (var i = 0; i < Model.furnList.Count; i++)
+                        {
+                            var furnId = "furn" + i;
+                            <form action="../Space/RemoveFurn" method="post">
+                                <div style="left:@((Model.furnList[i].Positions.Left) == null?"0":Model.furnList[i].Positions.Left);
+                                        top: @((Model.furnList[i].Positions.Top) == null? "0":Model.furnList[i].Positions.Top);"
+                                     id="@furnId"><button style="float:left;display:inline-block;position:absolute">X</button><img src="@(Model.furnList[i].ImageThumbUrl)" /></div>
+                                <input name="Index" type="text" value="@(i)" hidden />
+                            </form>
+                            <script>
+                                var furnId = 'furn' + count;
+                                count++;
+                                DisplayFurn(furnId);
+                            </script>
+                        }
+                    }
+                </div>
+                <div>
+                    <br />
+                    <form action="../Space/SaveFurn" method="post" class="form-inline" style="padding:10px">
+                        @if (Model.furnList.Count > 0)
+                        {
+                            for (var i = 0; i < Model.furnList.Count; i++)
+                            {
+                                var posIdLeft = "pos" + i + "Left";
+                                var posIdTop = "pos" + i + "Top";
+                                <input class="@(posIdLeft)" name="Left" type="text" hidden />
+                                <input class="@(posIdTop)" name="Top" type="text" hidden />
+                                <input name="Listings" type="text" value="@(Model.furnList[i].Listing_Id)" hidden />
+                            }
+                        }
+                        @Html.Label("Name", "Give it a name:", new { @class = "control-label", @style = "margin-right:10px;"})
+                        @Html.TextBox("Name", "", new { @class = "form-control", @style = "margin-right:10px;" })
+                        <button class="btn-orange" onclick="GetPositions()" value="submit">Save</button>
+                    </form>
+                </div>
+                <div>
+                    <form action="..\Space\Autofill" method="post">
+                            <button type="submit" value="Living Room" name="benjamin" class="btn-danger">Living Room AutoFill</button>
+                            <button type="submit" value="Bed Room" name="benjamin" class="btn-danger">Bed Room AutoFill</button>
+                            <button type="submit" value="Dinning Room" name="benjamin" class="btn-danger">Dinning Room AutoFill</button><br />
+                            <button type="submit" value="Kitchen" name="benjamin" class="btn-danger">Kitchen AutoFill</button>
+                            <button type="submit" value="Finished Basement" name="benjamin" class="btn-danger">Finished Basement AutoFill</button>
+                    </form>
+                </div>
+                <div id="searchFurn" class="spaceForm">
+                    @using (@Html.BeginForm("FurnitureList", "Search", FormMethod.Post, new { @class="form-inline", @style = "padding:10px" }))
+                    {
+                        if (Model.furnList.Count > 0)
+                        {
+                            for (var i = 0; i < Model.furnList.Count; i++)
+                            {
+                                var posIdLeft = "pos" + i + "Left";
+                                var posIdTop = "pos" + i + "Top";
+                                <input class="@(posIdLeft)" name="Left" type="text" hidden />
+                                <input class="@(posIdTop)" name="Top" type="text" hidden />
+                                <input name="Listings" type="text" value="@(Model.furnList[i].Listing_Id)" hidden />
+                            }
+                        }
+                        @Html.Label("SearchQ", "Furniture Type:", new { @class = "control-label", @style = "margin-right:10px;" })
+                        @Html.TextBox("SearchQ", "", new { @class = "form-control", @style = "margin-right:10px;" })
+                        <button type="submit" id="button" class="btn-orange button" onclick="GetPositions()">Search</button>
+                    }
+                </div>
+                <div class="items">
+                    @if (Model.items.Count > 0)
+                    {
+                        <div style="width:700px;display:block;margin:0 auto;">
+                           
+                        @foreach (var m in Model.items)
+                        {
+                            <br />
+                            <hr style="background-color:black;height:1px;clear:both;" />
+                            <form action="../Space/AddFurn" method="post">
+                                @if (Model.furnList.Count > 0)
+                                {
+                                    for (var i = 0; i < Model.furnList.Count; i++)
+                                    {
+                                        var posIdLeft = "pos" + i + "Left";
+                                        var posIdTop = "pos" + i + "Top";
+                                        <input class="@(posIdLeft)" name="Left" type="text" hidden />
+                                        <input class="@(posIdTop)" name="Top" type="text" hidden />
+                                        <input name="Listings" type="text" value="@(Model.furnList[i].Listing_Id)" hidden />
+                                    }
+                                }
+                                <input type="text" name="Listing_Id" value="@(m.Listing_Id)" hidden />
+                                <input type="text" name="Title" value="@(m.Title)" hidden />
+                                <input type="text" name="Url" value="@(m.Url)" hidden />
+                                <input type="text" name="Price" value="@(m.Price)" hidden />
+                                <input type="text" name="Currency_Code" value="@(m.Currency_Code)" hidden />
+                                <input type="text" name="ImageThumbUrl" value="@(m.ImageThumbUrl)" hidden />
+                                <input type="text" name="ImageFullUrl" value="@(m.ImageFullUrl)" hidden />
+                                <div style="display:block;float:right;">
+                                    <img src="@m.ImageThumbUrl" />
+                                    <button class="btn-orange" type="submit" onclick="GetPositions()">Add</button>
+                                </div>
+                                <div>
+                                    <a href="@m.Url">@m.Title</a>
+                                    <p>@m.Price @m.Currency_Code</p>
+                                </div>                                
+                            </form>
+                        }
+                        </div>
+
+                        if (Model.items != null)
+                        {
+                            <form action="../Search/FurnitureList" method="post" style="display:block;">
+                                <input type="text" name="SearchQ" value="@ViewBag.SearchQ" hidden />
+                                @if (Model.furnList.Count > 0)
+                                {
+                                    for (var i = 0; i < Model.furnList.Count; i++)
+                                    {
+                                        var posIdLeft = "pos" + i + "Left";
+                                        var posIdTop = "pos" + i + "Top";
+                                        <input class="@(posIdLeft)" name="Left" type="text" hidden />
+                                        <input class="@(posIdTop)" name="Top" type="text" hidden />
+                                        <input name="Listings" type="text" value="@(Model.furnList[i].Listing_Id)" hidden />
+                                    }
+                                }
+                                @if (ViewBag.PrevPage != null)
+                                {
+                                    <button class="btn-orange" type="submit" name="pageNo" onclick="GetPositions()" value="@ViewBag.PrevPage">Prev</button>
+                                }
+
+                                @if (ViewBag.NextPage != null)
+                                {
+                                    <button class="btn-orange" type="submit" name="pageNo" onclick="GetPositions()" value="@ViewBag.NextPage">Next</button>
+                                }
+                            </form>
+                        }
+                    }
+                </div>
+            }
         }
+
+        @if (Model.SpaceDimensions.Width == null && Model.SpaceDimensions.Length == null)
+        {
+            <div style="display:inline-block;text-align:left;" id="generateSpace" class="spaceForm">
+                @using (@Html.BeginForm("GenerateSpace", "Space", FormMethod.Post, new { @class = "form-group" }))
+                {
+                    @Html.Label("Width", "Width:")
+                    @Html.TextBox("Width", "", new { @class = "form-control" })
+                    @Html.Label("Length", "Length:")
+                    @Html.TextBox("Length", "",  new { @class = "form-control" })
+                    @Html.Label("Measurement", "Measurement:")
+                    @Html.DropDownList("Measurement",
+                                    new SelectList(Enum.GetValues(typeof(TypesOfMeasurement))),
+                                     new { @class = "form-control" })
+                    <br />
+                    <button class="col-md-offset-3 btn-orange" onclick="ChangeForm()">Generate Space</button>
+                }
+            </div>
+        }
+        </div>
     </div>
-}
 
