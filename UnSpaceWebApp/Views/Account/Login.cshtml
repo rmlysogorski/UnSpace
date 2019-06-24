@@ -5,70 +5,75 @@
 @{
     ViewBag.Title = "Login";
 }
-<h2 align="center">@ViewBag.Title.</h2>
-<section id="loginForm" style="">
-    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-    {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div id="myDiv">
-            <form acton="../Home/Index">                
-                <table align="center">
-                    <tr>
-                        <td>Enter Email</td>
-                        <td>
-                            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Enter Password</td>
-                        <td>
-                            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                        </td>
-                    </tr>
-                </table>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <div class="checkbox">
-                            @Html.CheckBoxFor(m => m.RememberMe)
-                            @Html.LabelFor(m => m.RememberMe)
+
+<div style="padding:15px;margin:0 auto;background-color:whitesmoke;width:700px;display:block;text-align:center;box-shadow:0 0 2px gray;border:2px solid #4169e1">
+    <h2 align="center">@ViewBag.Title.</h2>
+    <section id="loginForm">
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div id="myDiv">
+                <form acton="../Home/Index">
+                    <table align="center">
+                        <tr>
+                            <td style="padding:10px;">
+                                @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                            </td>
+                            <td>
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="form-group" style="text-align:center;">
+                        <div class="col-md-offset-2 col-md-10">
+                            <div class="checkbox">
+                                @Html.CheckBoxFor(m => m.RememberMe)
+                                @Html.LabelFor(m => m.RememberMe)
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Log in" class="btn btn-default" />
+                    <div class="form-group" style="text-align:center;">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Log in" class="btn btn-default" />
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
-    }
-</section>
-@*-------------------------------------------------------------------------------------------------------------------------------------------*@
-<section>
-    <div>
-        <form></form>
-    </div>
-</section>
-@*---------------------------------------------------------------------------------------------------------------------------------------------------*@
-<script>
-    function myFunction() {
-        var x = document.getElementById("myDiv");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-        } else {
-            x.style.display = "none";
+                </form>
+            </div>
         }
+    </section>
+</div>
+    @*-------------------------------------------------------------------------------------------------------------------------------------------*@
+    <section>
+        <div>
+            <form></form>
+        </div>
+    </section>
+    @*---------------------------------------------------------------------------------------------------------------------------------------------------*@
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myDiv");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+
+
+
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
     }
-</script>
-
-
-
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

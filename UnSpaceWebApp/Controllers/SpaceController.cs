@@ -95,9 +95,26 @@ namespace UnSpaceWebApp.Controllers
 
         public ActionResult GenerateSpace(string Width, string Length, string Measurement)
         {
-            thisSpace.SpaceDimensions.Width = Width;
-            thisSpace.SpaceDimensions.Length = Length;
+            double.TryParse(Width, out double width);
+            double.TryParse(Length, out double length);
             thisSpace.SpaceDimensions.Measurement = Measurement;
+            switch (thisSpace.SpaceDimensions.Measurement)
+            {
+                case "cm":
+                    break;
+                case "ft":
+                    width = width / 0.032808;
+                    length = length / 0.032808;
+                    break;
+                case "in":
+                    width = width * 12 / 0.032808;
+                    length = length * 12 / 0.032808;
+                    break;
+            }
+            width *= 1.5;
+            length *= 1.5;
+            thisSpace.SpaceDimensions.Width = width.ToString();
+            thisSpace.SpaceDimensions.Length = length.ToString();
             return View("Index", thisSpace);
         }
 
