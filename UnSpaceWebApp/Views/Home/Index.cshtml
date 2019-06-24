@@ -1,43 +1,76 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-<style type="text/css">    
-    .btn{
-        border: 1px solid #3498db;
+<style type="text/css">
+    img.bg {
+        margin: 0;
+        padding: 0;
+        background-image: url(../../Content/Images/background.png);
+        background-repeat: no-repeat;
+        background-size: contain;
+        min-height: 100%;
+        min-width: 100%;
+        position: fixed;
+        z-index: -999;
+        top: 0;
+        left: 100px;
+    }
+
+    .btn {
         background: none;
         padding: 20px 40px;
-        font-size: 20px;
-        font-family: "montserrat" ;
+        font-size: 2em;
+        font-family: "Segoe UI";
         cursor: pointer;
         margin: 10px;
         transition: 0.9s;
         position: relative;
         overflow: hidden;
     }
-    .btn1:hover, .btn2:hover {
-        color: #3498db;
+
+    .btn:hover{
+        color:orange;
     }
-    .btn::before{
-        content: "";
+
+    .hoverButton{
+        display:inline-block;
+        width:300px;
+        padding:100px 0;
+        background-color:skyblue;
+    }
+
+    .hoverButton2 {        
+        display:inline-block;
+        width:300px;
+        padding:100px 0;
+        background-color:orange;
+    }
+
+    .hoverButton:hover,.hoverButton2:hover {
+        background-color: royalblue;
+        color:white;
+        font-weight:bold;
+    }
+
+    footer {
         position: absolute;
-        left: 0;
-        width: 100%;
-        height: 0%;
-        background: #3498db;   
-        z-index: -1;
-        transition: 0.8s;
+        bottom: 30px;
+        color: whitesmoke;
     }
 </style>
 
-<div style="text-align:center;display:block;">
-    <form action="../Space/Index" method="post">
-        <div>
-            <button class="btn btn1">Create Space</button>
+
+    <div style="padding:15px;margin:0 auto;background-color:whitesmoke;width:700px;display:block;text-align:center;box-shadow:0 0 2px gray;border:2px solid #4169e1">
+        <div style="margin:0 auto;width:650px;text-align:center;padding:0;">
+            <div class="hoverButton">
+                <form class="myForm" action="../Space/Index" method="post">
+                    <button style="outline:none;box-shadow:none;" class="btn">Create Space</button>
+                </form>
+            </div>
+            <div class="hoverButton2">
+                <form action="../Home/Favorites" method="post">
+                    <button style="outline:none;box-shadow:none;" class="btn">View Your Spaces</button>
+                </form>
+            </div>
         </div>
-    </form>
-    <form action="../Home/Favorites">
-        <div>
-            <button class="btn btn2">View Your Spaces</button>
-        </div>
-    </form>
-</div>
+    </div>
