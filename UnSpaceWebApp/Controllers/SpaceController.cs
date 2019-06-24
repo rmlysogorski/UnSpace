@@ -57,6 +57,12 @@ namespace UnSpaceWebApp.Controllers
             return listing;
         }
 
+        public static string GenerateSpaceDimensions()
+        {
+            string spaceDimensions = $"{thisSpace.SpaceDimensions.Width}|{thisSpace.SpaceDimensions.Length}|{thisSpace.SpaceDimensions.Measurement}";
+            return spaceDimensions;
+        }
+
         public ActionResult AutoFill()
         {           
             List<EtsyItem> items = new List<EtsyItem>();
@@ -85,21 +91,36 @@ namespace UnSpaceWebApp.Controllers
             items.Add(newItem);            
             
             return View(items);
-        }
-
-
-    
+        }    
 
         public ActionResult GenerateSpace(string Width, string Length, string Measurement)
         {
-            thisSpace.SpaceDimensions.Width = Width;
-            thisSpace.SpaceDimensions.Length = Length;
+            double.TryParse(Width, out double width);
+            double.TryParse(Length, out double length);
             thisSpace.SpaceDimensions.Measurement = Measurement;
+            switch (thisSpace.SpaceDimensions.Measurement)
+            {
+                case "cm":
+                    break;
+                case "ft":
+                    width = width / 0.032808;
+                    length = length / 0.032808;
+                    break;
+                case "in":
+                    width = width * 12 / 0.032808;
+                    length = length * 12 / 0.032808;
+                    break;
+            }
+            width *= 1.5;
+            length *= 1.5;
+            thisSpace.SpaceDimensions.Width = width.ToString();
+            thisSpace.SpaceDimensions.Length = length.ToString();
             return View("Index", thisSpace);
         }
 
-        public ActionResult AddFurn(string Listing_Id, string Title, string Url, string Price, string Currency_Code, string ImageThumbUrl, string ImageFullUrl)
+        public ActionResult AddFurn(string Listing_Id, string Title, string Url, string Price, string Currency_Code, string ImageThumbUrl, string ImageFullUrl, List<string> Left, List<string> Top)
         {
+            SavePositions(Left, Top);            
             if (TempData["prevPage"] != null)
             {
                 TempData["prevPage"] = TempData["prevPage"];
@@ -142,11 +163,11 @@ namespace UnSpaceWebApp.Controllers
             {
                 TempData["SearchQ"] = TempData["SearchQ"];
             }
-            string left = Left[0];
-            string top = Top[0];
+            SavePositions(Left, Top);
             UserSpace userSpace = new UserSpace();
             userSpace.UserId = User.Identity.Name;
             userSpace.Listing = GenerateListingString(Listings);
+            userSpace.SpaceDimensions = GenerateSpaceDimensions();
             userSpace.Name = Name;
             return RedirectToAction("SaveUserSpace", "UnSpaceDb", userSpace);
         }
@@ -206,6 +227,18 @@ namespace UnSpaceWebApp.Controllers
             }
             thisSpace.furnList.RemoveAt(int.Parse(Index));
             return RedirectToAction("Index");
+        }
+
+        public static void SavePositions(List<string> Left, List<string> Top)
+        {
+            if (Left != null)
+            {
+                for (int i = 0; i < Left.Count; i++)
+                {
+                    thisSpace.furnList[i].Positions.Left = Left[i];
+                    thisSpace.furnList[i].Positions.Top = Top[i];
+                }
+            }
         }
     }
 }

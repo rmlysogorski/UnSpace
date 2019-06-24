@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="UnSpaceDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="UnSpaceDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="UserSpaces">
           <Key>
             <PropertyRef Name="Id" />
@@ -14,28 +14,31 @@
           <Property Name="Listing" Type="nvarchar(max)" />
           <Property Name="QRCode" Type="nvarchar(max)" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Positions" Type="nvarchar(max)" />
+          <Property Name="SpaceDimensions" Type="nvarchar(max)" />
         </EntityType>
         <EntityContainer Name="UnSpaceDbModelStoreContainer">
           <EntitySet Name="UserSpaces" EntityType="Self.UserSpaces" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="UnSpaceDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="UnSpaceDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="UserSpaces" EntityType="UnSpaceDbModel.UserSpace" />
+        </EntityContainer>
         <EntityType Name="UserSpace">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="Listing" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="QRCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Positions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SpaceDimensions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityContainer Name="UnSpaceDbEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="UserSpaces" EntityType="Self.UserSpace" />
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -45,11 +48,13 @@
           <EntitySetMapping Name="UserSpaces">
             <EntityTypeMapping TypeName="UnSpaceDbModel.UserSpace">
               <MappingFragment StoreEntitySet="UserSpaces">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Listing" ColumnName="Listing" />
-                <ScalarProperty Name="QRCode" ColumnName="QRCode" />
+                <ScalarProperty Name="SpaceDimensions" ColumnName="SpaceDimensions" />
+                <ScalarProperty Name="Positions" ColumnName="Positions" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="QRCode" ColumnName="QRCode" />
+                <ScalarProperty Name="Listing" ColumnName="Listing" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

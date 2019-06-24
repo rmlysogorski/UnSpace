@@ -19,5 +19,13 @@ namespace UnSpaceWebApp.Models
         public string ImageThumbUrl { set; get; }
         public string ImageFullUrl { set; get; }
 
+        public FurnPosition Positions = new FurnPosition();
+
+        public class FurnPosition
+        {
+            public string Left { get; set; }
+            public string Top { get; set; }
+        }
+
     }
 }
