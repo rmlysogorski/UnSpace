@@ -23,7 +23,7 @@ namespace UnSpaceWebApp.Models
             if(code == "image")
             {
                 url += $"{options}/images?api_key={APIKey}";
-            }
+            } 
             if(code == "listing")
             {
                 url += $"{options}?api_key={APIKey}";

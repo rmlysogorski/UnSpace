@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -106,8 +106,8 @@ namespace UnSpaceWebApp.Controllers
             List<EtsyItem> items = new List<EtsyItem>();
 
             Random randomPage = new Random();
-
-            switch (benjamin)
+            
+            switch(benjamin)
             {
                 case "Living Room":
                     
@@ -128,9 +128,10 @@ namespace UnSpaceWebApp.Controllers
                         EtsyItem newItem3 = new EtsyItem();               
                         newItem3.Listing_Id = data3["results"][randomo]["listing_id"].ToString();
                         items.Add(EtsyDAL.MakeEtsyItem(newItem3.Listing_Id));
-
+                
 
                         break;
+
 
                     
                 case "Kitchen":
