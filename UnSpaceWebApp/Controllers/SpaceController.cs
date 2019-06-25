@@ -357,6 +357,12 @@ namespace UnSpaceWebApp.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult SlideShowTest()
+        {
+            
+            return View(thisSpace.furnList);
+        }
+
         public static void SavePositions(List<string> Left, List<string> Top)
         {
             if (Left != null)
@@ -368,5 +374,8 @@ namespace UnSpaceWebApp.Controllers
                 }
             }
         }
+
+        
+
     }
 }
