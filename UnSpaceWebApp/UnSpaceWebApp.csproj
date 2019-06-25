@@ -186,6 +186,9 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\EtsyDAL.cs" />
     <Compile Include="Models\EtsyItem.cs" />
+    <Compile Include="Models\EtsyItemDb.cs">
+      <DependentUpon>UnSpaceDb.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MySpace.cs" />
