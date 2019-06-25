@@ -3,6 +3,20 @@
 @{
     ViewBag.Title = "Let's UnSpace Your Space!";
 }
+<style type="text/css">
+    .X{
+       float:right;
+       right:0;
+       display:inline-block;
+       position:absolute;
+       text-decoration:none;
+       border:none;
+       outline:none;
+       color:red;
+       font-weight:bold;
+       background-color:transparent;
+    }
+</style>
 <script type="text/javascript">
     var count = 0;
     function DisplayFurn(furnId) {
@@ -82,7 +96,6 @@
         {
             if (Model.SpaceDimensions.Width != null && Model.SpaceDimensions.Length != null)
             {
-
                 <div id="mySpace" style="margin:0 auto;position:relative;display:block;width:@(Model.SpaceDimensions.Width)px; height:@(Model.SpaceDimensions.Length)px;background-color:whitesmoke;border:1px dashed black;">
                     @if (Model.furnList.Count > 0)
                     {
@@ -90,9 +103,21 @@
                         {
                             var furnId = "furn" + i;
                             <form action="../Space/RemoveFurn" method="post">
+                                @if (Model.furnList.Count > 0)
+                                {
+                                    for (var j = 0; j < Model.furnList.Count; j++)
+                                    {
+                                        var posIdLeft = "pos" + j + "Left";
+                                        var posIdTop = "pos" + j + "Top";
+                                        <input class="@(posIdLeft)" name="Left" type="text" hidden />
+                                        <input class="@(posIdTop)" name="Top" type="text" hidden />
+                                        <input name="Listings" type="text" value="@(Model.furnList[j].Listing_Id)" hidden />
+                                    }
+                                }
                                 <div style="left:@((Model.furnList[i].Positions.Left) == null?"0":Model.furnList[i].Positions.Left);
                                         top: @((Model.furnList[i].Positions.Top) == null? "0":Model.furnList[i].Positions.Top);"
-                                     id="@furnId"><button style="float:left;display:inline-block;position:absolute">X</button><img src="@(Model.furnList[i].ImageThumbUrl)" /></div>
+                                     id="@furnId"><button onclick="GetPositions()" class="X">X</button>
+                                <img  height="@(Model.furnList[i].Item_Length)px" width = "@(Model.furnList[i].Item_Width)px" src="@(Model.furnList[i].ImageThumbUrl)" /></div>
                                 <input name="Index" type="text" value="@(i)" hidden />
                             </form>
                             <script>
@@ -262,8 +287,10 @@
                                 <input name="Listings" type="text" value="@(Model.furnList[i].Listing_Id)" hidden />
                             }
                         }
-                        @Html.Label("Name", "Give it a name:", new { @class = "control-label", @style = "margin-right:10px;" })
-                        @Html.TextBox("Name", "", new { @class = "form-control", @style = "margin-right:10px;" })
+
+                        @Html.Label("Name", "Give it a name:", new { @class = "control-label", @style = "margin-right:10px;"})
+                        @Html.TextBox("Name", ((Model.Name != string.Empty)? Model.Name : ""), new { @class = "form-control", @style = "margin-right:10px;" })
+
                         <button class="btn-orange" onclick="GetPositions()" value="submit">Save</button>
                     </form>
                 </div>
@@ -301,6 +328,7 @@
                     {
                         <div style="width:700px;display:block;margin:0 auto;">
 
+
                             @foreach (var m in Model.items)
                             {
                                 <br />
@@ -317,23 +345,33 @@
                                             <input name="Listings" type="text" value="@(Model.furnList[i].Listing_Id)" hidden />
                                         }
                                     }
-                                    <input type="text" name="Listing_Id" value="@(m.Listing_Id)" hidden />
-                                    <input type="text" name="Title" value="@(m.Title)" hidden />
-                                    <input type="text" name="Url" value="@(m.Url)" hidden />
-                                    <input type="text" name="Price" value="@(m.Price)" hidden />
-                                    <input type="text" name="Currency_Code" value="@(m.Currency_Code)" hidden />
-                                    <input type="text" name="ImageThumbUrl" value="@(m.ImageThumbUrl)" hidden />
-                                    <input type="text" name="ImageFullUrl" value="@(m.ImageFullUrl)" hidden />
-                                    <div style="display:block;float:right;">
-                                        <img src="@m.ImageThumbUrl" />
-                                        <button class="btn-orange" type="submit" onclick="GetPositions()">Add</button>
-                                    </div>
-                                    <div>
-                                        <a href="@m.Url">@m.Title</a>
-                                        <p>@m.Price @m.Currency_Code</p>
-                                    </div>
-                                </form>
-                            }
+
+                                }
+                                <input type="text" name="Listing_Id" value="@(m.Listing_Id)" hidden />
+                                <input type="text" name="Title" value="@(m.Title)" hidden />
+                                <input type="text" name="Description" value="@(m.Description)" hidden />
+                                <input type="text" name="Url" value="@(m.Url)" hidden />
+                                <input type="text" name="Price" value="@(m.Price)" hidden />
+                                <input type="text" name="Currency_Code" value="@(m.Currency_Code)" hidden />
+                                <input type="text" name="ImageThumbUrl" value="@(m.ImageThumbUrl)" hidden />
+                                <input type="text" name="ImageFullUrl" value="@(m.ImageFullUrl)" hidden />
+                                <div style="display:block;float:left;">
+                                    <img style="padding:10px;" src="@m.ImageThumbUrl" />
+                                    <p>@m.Item_Length @m.Item_Width</p>
+                                </div>
+                                <div>
+                                    <p><a href="@m.Url">@m.Title</a></p>
+                                    <p>@m.Description</p>
+                                    <p>@m.Price @m.Currency_Code</p>
+                                </div> 
+                                <div style="clear:both">
+                                    <button class="btn-orange" type="submit" onclick="GetPositions()">Add</button>
+                                </div>
+                            </form>
+                            <div style="clear:both"></div>
+                        }
+                            <div style="height:10px;clear:both"></div>
+
                         </div>
 
                         if (Model.items != null)
