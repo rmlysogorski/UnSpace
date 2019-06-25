@@ -14,7 +14,7 @@ namespace UnSpaceWebApp.Controllers
         // GET: UnSpaceDb
         public ActionResult SaveUserSpace(UserSpace userSpace)
         {
-
+            List<EtsyItem> furnList = new List<EtsyItem>();
             if (TempData["prevPage"] != null)
             {
                 TempData["prevPage"] = TempData["prevPage"];
@@ -27,6 +27,10 @@ namespace UnSpaceWebApp.Controllers
             {
                 TempData["SearchQ"] = TempData["SearchQ"];
             }
+            if (TempData["furnList"] != null)
+            {
+                furnList = (List<EtsyItem>)TempData["furnList"];
+            }
             UserSpace result = ORM.UserSpaces.SingleOrDefault(u => u.UserId == userSpace.UserId && u.Name == userSpace.Name);
             if (result != null)
             {
@@ -34,7 +38,15 @@ namespace UnSpaceWebApp.Controllers
                 result.QRCode = userSpace.QRCode;
                 result.Name = userSpace.Name;
                 result.SpaceDimensions = userSpace.SpaceDimensions;
-                ORM.SaveChanges();
+                result.Positions = userSpace.Positions;
+                try
+                {
+                    ORM.SaveChanges();
+                }
+                catch (DbEntityValidationException e)
+                {
+                    string error = e.Message;
+                }
             }
             else
             {
@@ -43,11 +55,42 @@ namespace UnSpaceWebApp.Controllers
                 {
                     ORM.SaveChanges();
                 }
-                catch(DbEntityValidationException e)
+                catch (DbEntityValidationException e)
                 {
                     string error = e.Message;
                 }
             }
+            foreach (EtsyItem e in furnList)
+            {
+                EtsyItemDb res = ORM.EtsyItemDbs.SingleOrDefault(r=>r.Listing_Id == e.Listing_Id);
+                if (res == null)
+                {
+                    EtsyItemDb dbItem = new EtsyItemDb();
+                    dbItem.Listing_Id = e.Listing_Id;
+                    dbItem.Title = e.Title;
+                    dbItem.Price = e.Price;
+                    dbItem.Currency_Code = e.Currency_Code;
+                    dbItem.Item_Length = e.Item_Length;
+                    dbItem.Item_Width = e.Item_Width;
+                    dbItem.Item_Height = e.Item_Height;
+                    dbItem.Item_Dimensions_Unit = e.Item_Dimensions_unit;
+                    dbItem.Url = e.Url;
+                    dbItem.ImageThumbUrl = e.ImageThumbUrl;
+                    dbItem.ImageFullUrl = e.ImageFullUrl;
+                    dbItem.Description = e.Description;
+                    ORM.EtsyItemDbs.Add(dbItem);
+                    try
+                    {
+                        ORM.SaveChanges();
+                    }
+                    catch (DbEntityValidationException err)
+                    {
+                        string error = err.Message;
+                    }
+                }          
+                
+            }
+           
             return RedirectToAction("Index", "Space");
         }
 
@@ -59,10 +102,27 @@ namespace UnSpaceWebApp.Controllers
         }
 
         public static UserSpace GetThisUserSpace(string Id)
+        {            
+            return ORM.UserSpaces.Find(int.Parse(Id));
+        }
+
+        public static EtsyItem ConvertEtsyItemDb(string listing)
         {
-            UserSpace thisSpace = new UserSpace();            
-            thisSpace = ORM.UserSpaces.Find(int.Parse(Id));
-            return thisSpace;
+            EtsyItemDb e = ORM.EtsyItemDbs.SingleOrDefault(result => result.Listing_Id == listing);
+            EtsyItem etsyItem = new EtsyItem();
+            etsyItem.Listing_Id = e.Listing_Id;
+            etsyItem.Title = e.Title;
+            etsyItem.Price = e.Price;
+            etsyItem.Currency_Code = e.Currency_Code;
+            etsyItem.Item_Length = e.Item_Length;
+            etsyItem.Item_Width = e.Item_Width;
+            etsyItem.Item_Height = e.Item_Height;
+            etsyItem.Item_Dimensions_unit = e.Item_Dimensions_Unit;
+            etsyItem.Url = e.Url;
+            etsyItem.ImageThumbUrl = e.ImageThumbUrl;
+            etsyItem.ImageFullUrl = e.ImageFullUrl;
+            etsyItem.Description = e.Description;
+            return etsyItem;
         }
     }
 }

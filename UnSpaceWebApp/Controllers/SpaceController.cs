@@ -19,9 +19,11 @@ namespace UnSpaceWebApp.Controllers
             if(Id != null)
             {
                 UserSpace userSpace = UnSpaceDbController.GetThisUserSpace(Id);
-                thisSpace.furnList = GetSavedSpace(userSpace);
+                thisSpace.furnList = GetSavedSpaceFurn(userSpace);
                 thisSpace.Id = Id;
                 thisSpace.Name = userSpace.Name;
+                UnravelDimensionsString(userSpace.SpaceDimensions);
+                UnravelPositionsString(userSpace.Positions);
             }
             if(TempData["items"] != null)
             {
@@ -57,15 +59,46 @@ namespace UnSpaceWebApp.Controllers
             return listing;
         }
 
-        public ActionResult AutofillForm()
+        public static string GeneratePositionString(List<string> Left, List<string> Top)
         {
-            return View();
+            string positions = string.Empty;
+            for(int i=0; i < Left.Count; i++)
+            {
+                positions += Left[i] + "|" + Top[i] + ",";
+            }
+            return positions;
         }
         
         public static string GenerateSpaceDimensions()
         {
             string spaceDimensions = $"{thisSpace.SpaceDimensions.Width}|{thisSpace.SpaceDimensions.Length}|{thisSpace.SpaceDimensions.Measurement}";
             return spaceDimensions;
+        }
+
+        public static void UnravelDimensionsString(string Listing)
+        {
+            thisSpace.SpaceDimensions.Width = Listing.Split('|')[0];
+            thisSpace.SpaceDimensions.Length = Listing.Split('|')[1];
+            thisSpace.SpaceDimensions.Measurement = Listing.Split('|')[2];
+        }
+
+        public static void UnravelPositionsString(string Positions)
+        {
+            int count = 0;
+            foreach (string pos in Positions.Split(','))
+            {
+                if(pos != string.Empty)
+                {
+                    thisSpace.furnList[count].Positions.Left = pos.Split('|')[0];
+                    thisSpace.furnList[count].Positions.Top = pos.Split('|')[1];
+                    count++;
+                }
+            }
+        }
+
+        public ActionResult AutofillForm()
+        {
+            return View();
         }
 
         public ActionResult AutoFill(string benjamin)
@@ -97,7 +130,7 @@ namespace UnSpaceWebApp.Controllers
                         items.Add(EtsyDAL.MakeEtsyItem(newItem3.Listing_Id));
 
 
-                        return View(items);
+                        break;
 
                     
                 case "Kitchen":
@@ -120,7 +153,7 @@ namespace UnSpaceWebApp.Controllers
                     items.Add(EtsyDAL.MakeEtsyItem(newItemK3.Listing_Id));
 
 
-                    return View(items);
+                    break;
 
                 case "Bed Room":
                     Random randomResultB = new Random();
@@ -186,7 +219,8 @@ namespace UnSpaceWebApp.Controllers
                     
                     break;
             }
-            return View(items);
+            thisSpace.furnList = items;
+            return RedirectToAction("Index");
         }    
 
         public ActionResult GenerateSpace(string Width, string Length, string Measurement)
@@ -203,8 +237,8 @@ namespace UnSpaceWebApp.Controllers
                     length = length / 0.032808;
                     break;
                 case "in":
-                    width = width * 12 / 0.032808;
-                    length = length * 12 / 0.032808;
+                    width = width / 12 / 0.032808;
+                    length = length / 12 / 0.032808;
                     break;
             }
             width *= 1.5;
@@ -231,16 +265,7 @@ namespace UnSpaceWebApp.Controllers
             }
             EtsyItem etsyItem = new EtsyItem();
             etsyItem.Listing_Id = Listing_Id;
-            if (Title.Contains('&'))
-            {
-                Title.Replace("&", "&amp;");
-            }
-            etsyItem.Title = Title;
-            etsyItem.Url = Url;
-            etsyItem.Price = Price;
-            etsyItem.Currency_Code = Currency_Code;
-            etsyItem.ImageThumbUrl = ImageThumbUrl;
-            etsyItem.ImageFullUrl = ImageFullUrl;
+            etsyItem = EtsyDAL.MakeEtsyItem(etsyItem.Listing_Id);
             thisSpace.furnList.Add(etsyItem);
             return RedirectToAction("Index");
         }
@@ -262,52 +287,58 @@ namespace UnSpaceWebApp.Controllers
             SavePositions(Left, Top);
             UserSpace userSpace = new UserSpace();
             userSpace.UserId = User.Identity.Name;
+            userSpace.Name = Name;
             userSpace.Listing = GenerateListingString(Listings);
             userSpace.SpaceDimensions = GenerateSpaceDimensions();
-            userSpace.Name = Name;
-            return RedirectToAction("SaveUserSpace", "UnSpaceDb", userSpace);
+            userSpace.Positions = GeneratePositionString(Left, Top);
+            TempData["furnList"] = thisSpace.furnList;
+            return RedirectToAction("SaveUserSpace", "UnSpaceDb",  userSpace );
         }
 
-        public List<EtsyItem> GetSavedSpace(UserSpace thisUserSpace)
+        public List<EtsyItem> GetSavedSpaceFurn(UserSpace thisUserSpace)
         {   
             List<EtsyItem> userItems = new List<EtsyItem>();
+            //int count = 0;
             foreach (string listing in thisUserSpace.Listing.Split(','))
             {
                 if (listing != string.Empty)
                 {
                     EtsyItem newItem = new EtsyItem();
-                    newItem.Listing_Id = listing;
+                    newItem = UnSpaceDbController.ConvertEtsyItemDb(listing);
                     userItems.Add(newItem);
                 }
             }
 
-            List<EtsyItem> returnList = new List<EtsyItem>();
-            foreach (EtsyItem e in userItems)
-            {
-                EtsyItem newItem = new EtsyItem();
-                newItem.Listing_Id = e.Listing_Id;
-                JObject data = EtsyDAL.GetEtsyAPI(e.Listing_Id, "listing");
-                if(data["results"][0]["state"].ToString() != "sold_out")
-                {
-                    newItem.Title = data["results"][0]["title"].ToString();
-                    newItem.Url = data["results"][0]["url"].ToString();
-                    newItem.Price = data["results"][0]["price"].ToString();
-                    newItem.Item_Width = data["results"][0]["item_width"].ToString();
-                    newItem.Item_Length = data["results"][0]["item_length"].ToString();
-                    newItem.Item_Height = data["results"][0]["item_height"].ToString();
-                    newItem.Item_Dimensions_unit = data["results"][0]["item_dimensions_unit"].ToString();
-                    newItem.Currency_Code = data["results"][0]["currency_code"].ToString();
-                    JObject imageData = EtsyDAL.GetEtsyAPI(newItem.Listing_Id, "image");
-                    newItem.ImageThumbUrl = imageData["results"][0]["url_75x75"].ToString();
-                    newItem.ImageFullUrl = imageData["results"][0]["url_fullxfull"].ToString();
-                }                
-                returnList.Add(newItem);
-                System.Threading.Thread.Sleep(500);
-            }
-            return returnList;
+            //List<EtsyItem> returnList = new List<EtsyItem>();
+            //foreach (EtsyItem e in userItems)
+            //{
+            //    EtsyItem newItem = new EtsyItem();
+            //    newItem.Listing_Id = e.Listing_Id;
+            //    newItem.Positions.Left = thisUserSpace.Positions.Split(',')[count].Split('|')[0];
+            //    newItem.Positions.Top = thisUserSpace.Positions.Split(',')[count].Split('|')[1];
+            //    count++;
+            //    JObject data = EtsyDAL.GetEtsyAPI(e.Listing_Id, "listing");
+            //    if(data["results"][0]["state"].ToString() != "sold_out")
+            //    {
+            //        newItem.Title = data["results"][0]["title"].ToString();
+            //        newItem.Url = data["results"][0]["url"].ToString();
+            //        newItem.Price = data["results"][0]["price"].ToString();
+            //        newItem.Item_Width = data["results"][0]["item_width"].ToString();
+            //        newItem.Item_Length = data["results"][0]["item_length"].ToString();
+            //        newItem.Item_Height = data["results"][0]["item_height"].ToString();
+            //        newItem.Item_Dimensions_unit = data["results"][0]["item_dimensions_unit"].ToString();
+            //        newItem.Currency_Code = data["results"][0]["currency_code"].ToString();
+            //        JObject imageData = EtsyDAL.GetEtsyAPI(newItem.Listing_Id, "image");
+            //        newItem.ImageThumbUrl = imageData["results"][0]["url_75x75"].ToString();
+            //        newItem.ImageFullUrl = imageData["results"][0]["url_fullxfull"].ToString();
+            //    }                
+            //    returnList.Add(newItem);
+            //    System.Threading.Thread.Sleep(500);
+            //}
+            return userItems;
         }
 
-        public ActionResult RemoveFurn(string Index)
+        public ActionResult RemoveFurn(string Index, List<string> Left, List<string> Top)
         {
             if (TempData["prevPage"] != null)
             {
@@ -321,6 +352,7 @@ namespace UnSpaceWebApp.Controllers
             {
                 TempData["SearchQ"] = TempData["SearchQ"];
             }
+            SavePositions(Left, Top);
             thisSpace.furnList.RemoveAt(int.Parse(Index));
             return RedirectToAction("Index");
         }

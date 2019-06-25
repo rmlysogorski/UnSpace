@@ -26,5 +26,6 @@ namespace UnSpaceWebApp.Models
         }
     
         public virtual DbSet<UserSpace> UserSpaces { get; set; }
+        public virtual DbSet<EtsyItemDb> EtsyItemDbs { get; set; }
     }
 }
