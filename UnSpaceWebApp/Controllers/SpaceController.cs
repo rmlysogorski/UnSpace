@@ -68,13 +68,13 @@ namespace UnSpaceWebApp.Controllers
             return spaceDimensions;
         }
 
-        public ActionResult AutoFill()
+        public ActionResult AutoFill(string benjamin)
         {           
             List<EtsyItem> items = new List<EtsyItem>();
 
             Random randomPage = new Random();
-
-            switch (benjamin)
+            
+            switch(benjamin)
             {
                 case "Living Room":
                     
@@ -95,9 +95,10 @@ namespace UnSpaceWebApp.Controllers
                         EtsyItem newItem3 = new EtsyItem();               
                         newItem3.Listing_Id = data3["results"][randomo]["listing_id"].ToString();
                         items.Add(EtsyDAL.MakeEtsyItem(newItem3.Listing_Id));
-
+                
 
                         return View(items);
+                
 
                     
                 case "Kitchen":
