@@ -104,6 +104,13 @@
             //document.getElementById(idTop).value = document.getElementById(furnId).style.top;
         }
     }
+
+    function RotateItem(imgId) {
+        var width = imgId.width;
+        var height = imgId.height;
+        imgId.width = height + 2;
+        imgId.height = width + 2;
+    }
     
 </script>
 @*<script>
@@ -160,6 +167,7 @@
                         for (var i = 0; i < Model.furnList.Count; i++)
                         {
                             var furnId = "furn" + i;
+                            var imgId = "img" + i;
                             <form action="../Space/RemoveFurn" method="post">
                                 @if (Model.furnList.Count > 0)
                                 {
@@ -175,8 +183,7 @@
                                 <div style="left:@((Model.furnList[i].Positions.Left) == null?"0":Model.furnList[i].Positions.Left);
                                         top: @((Model.furnList[i].Positions.Top) == null? "0":Model.furnList[i].Positions.Top);"
                                      id="@furnId">
-                                    <button onclick="GetPositions()" class="X">X</button>
-
+                                    <button onclick="GetPositions()" class="X">X</button>                                    
                                     <button type="button" onclick="RotateItem(@imgId)" class="R"><img width="20" height="20" src="~/Content/Images/rotate-arrow.png" /></button>
                                     <img onclick="currentSlide(@(i+1))"
                                          style="border:1px solid black"
@@ -440,7 +447,6 @@
                                     <input type="text" name="ImageFullUrl" value="@(m.ImageFullUrl)" hidden />
                                     <div style="display:block;float:left;">
                                         <img style="padding:10px;" src="@m.ImageThumbUrl" />
-                                        <p>@m.Item_Length @m.Item_Width</p>
                                     </div>
                                     <div>
                                         <p><a href="@m.Url">@m.Title</a></p>

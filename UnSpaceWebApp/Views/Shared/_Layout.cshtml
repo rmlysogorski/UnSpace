@@ -154,12 +154,16 @@ a {
             <span style="font-weight:bold;font-size:1em;color:skyblue;-webkit-text-stroke-color:white;-webkit-text-stroke-width:1px;">Un</span>
             <span style="font-weight:bold;font-size:1em;color:orange;-webkit-text-stroke-color:white;-webkit-text-stroke-width:1px;">Space</span>
         </a>
+        @if (User.Identity.IsAuthenticated)
+        {            
+            <a href="../Space/MakeNewSpace" >New Space</a>
+            <a href="../Home/Favorites" >Favorites</a>
+        }
         @Html.Partial("_LoginPartial")
         <div style="color:whitesmoke;">
             <p style="bottom:25px;position:fixed;padding-left:5px;">&copy; @DateTime.Now.Year - UnSpace</p>
         </div>
-        <a href="../Space/Index" />Make New Space</a>
-        <a href="../Home/Favorites"/>Favorites</a>
+
     </div>
 
     <div class="container body-content">
