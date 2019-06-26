@@ -107,144 +107,85 @@ namespace UnSpaceWebApp.Controllers
             return View();
         }
 
+        public static EtsyItem MakeRandomEtsyItem(string Listing_Id)
+        {
+            EtsyItem newItem = new EtsyItem();
+            newItem.Listing_Id = Listing_Id;
+            newItem = EtsyDAL.MakeEtsyItem(newItem.Listing_Id);
+            if (newItem.Item_Width is null || newItem.Item_Width == "0")
+            {
+                newItem.Item_Width = "150";
+                newItem.Item_Length = "150";
+            }
+            return newItem;
+        }
         public ActionResult AutoFill(string benjamin)
-        {           
+        {
             List<EtsyItem> items = new List<EtsyItem>();
-
             Random randomPage = new Random();
-            
-            switch(benjamin)
+
+            switch (benjamin)
             {
                 case "Living Room":
-                    
-                        Random randomResult = new Random();
-                        int randomo = randomResult.Next(0, 25);
 
-                        JObject data = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 2005)}&category=furniture&keywords=" + "table", "active");
-                        EtsyItem newItem = new EtsyItem();
-                        newItem.Listing_Id = data["results"][randomo]["listing_id"].ToString();
-                        //Check Width & Height before adding
-                        items.Add(EtsyDAL.MakeEtsyItem(newItem.Listing_Id));
+                    Random randomResult = new Random();
+                    int randomo = randomResult.Next(0, 25);
+                    JObject data = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 2005)}&category=furniture&keywords=" + "table", "active");
+                    items.Add(MakeRandomEtsyItem(data["results"][randomo]["listing_id"].ToString()));
+                    JObject data2 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 123)}&category=furniture&keywords=" + "couch", "active");
+                    items.Add(MakeRandomEtsyItem(data2["results"][randomo]["listing_id"].ToString()));
+                    JObject data3 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 123)}&category=furniture&keywords=" + "chair", "active");
+                    items.Add(MakeRandomEtsyItem(data3["results"][randomo]["listing_id"].ToString()));
+                    break;
 
-                        JObject data2 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 123)}&category=furniture&keywords=" + "couch", "active");
-                        EtsyItem newItem2 = new EtsyItem();
-                        newItem2.Listing_Id = data2["results"][randomo]["listing_id"].ToString();
-                        //Check Width & Height before adding
-                        items.Add(EtsyDAL.MakeEtsyItem(newItem2.Listing_Id));
-
-                        JObject data3 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 123)}&category=furniture&keywords=" + "chair", "active");                                                                  
-                        EtsyItem newItem3 = new EtsyItem();               
-                        newItem3.Listing_Id = data3["results"][randomo]["listing_id"].ToString();
-                        //Check Width & Height before adding
-                        items.Add(EtsyDAL.MakeEtsyItem(newItem3.Listing_Id));
-                
-
-                        break;
-
-
-                    
                 case "Kitchen":
                     Random randomResultK = new Random();
                     int randomoK = randomResultK.Next(0, 25);
-
                     JObject dataK = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 2005)}&keywords=" + "plant", "active");
-                    EtsyItem newItemK = new EtsyItem();
-                    newItemK.Listing_Id = dataK["results"][randomoK]["listing_id"].ToString();
-                    //Check Width & Height before adding
-                    items.Add(EtsyDAL.MakeEtsyItem(newItemK.Listing_Id));
-
+                    items.Add(MakeRandomEtsyItem(dataK["results"][randomoK]["listing_id"].ToString()));
                     JObject dataK2 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 20)}&category=furniture&keywords=" + "clock", "active");
-                    EtsyItem newItemK2 = new EtsyItem();
-                    newItemK2.Listing_Id = dataK2["results"][randomoK]["listing_id"].ToString();
-                    //Check Width & Height before adding
-                    items.Add(EtsyDAL.MakeEtsyItem(newItemK2.Listing_Id));
-
+                    items.Add(MakeRandomEtsyItem(dataK2["results"][randomoK]["listing_id"].ToString()));
                     JObject dataK3 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 851)}&category=furniture&keywords=" + "stool", "active");
-                    EtsyItem newItemK3 = new EtsyItem();
-                    newItemK3.Listing_Id = dataK3["results"][randomoK]["listing_id"].ToString();
-                    //Check Width & Height before adding
-                    items.Add(EtsyDAL.MakeEtsyItem(newItemK3.Listing_Id));
-
-
+                    items.Add(MakeRandomEtsyItem(dataK3["results"][randomoK]["listing_id"].ToString()));
                     break;
-
                 case "Bed Room":
                     Random randomResultB = new Random();
                     int randomoB = randomResultB.Next(0, 25);
-
                     JObject dataB = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 557)}&category=furniture&keywords=" + "bed", "active");
-                    EtsyItem newItemB = new EtsyItem();
-                    newItemB.Listing_Id = dataB["results"][randomoB]["listing_id"].ToString();
-                    //Check Width & Height before adding
-                    items.Add(EtsyDAL.MakeEtsyItem(newItemB.Listing_Id));
-
+                    items.Add(MakeRandomEtsyItem(dataB["results"][randomoB]["listing_id"].ToString()));
                     JObject dataB2 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 135)}&category=furniture&keywords=" + "night%20stand", "active");
-                    EtsyItem newItemB2 = new EtsyItem();
-                    newItemB2.Listing_Id = dataB2["results"][randomoB]["listing_id"].ToString();
-                    //Check Width & Height before adding
-                    items.Add(EtsyDAL.MakeEtsyItem(newItemB2.Listing_Id));
-
+                    items.Add(MakeRandomEtsyItem(dataB2["results"][randomoB]["listing_id"].ToString()));
                     JObject dataB3 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 2005)}&keywords=" + "lamp", "active");
-                    EtsyItem newItemB3 = new EtsyItem();
-                    newItemB3.Listing_Id = dataB3["results"][randomoB]["listing_id"].ToString();
-                    //Check Width & Height before adding
-                    items.Add(EtsyDAL.MakeEtsyItem(newItemB3.Listing_Id));
-
+                    items.Add(MakeRandomEtsyItem(dataB3["results"][randomoB]["listing_id"].ToString()));
                     break;
                 case "Dinning Room":
                     Random randomResultD = new Random();
                     int randomoD = randomResultD.Next(0, 25);
-
                     JObject dataD = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 52)}&category=furniture&keywords=" + "dinning%20table", "active");
-                    EtsyItem newItemD = new EtsyItem();
-                    newItemD.Listing_Id = dataD["results"][randomoD]["listing_id"].ToString();
-                    //Check Width & Height before adding
-                    items.Add(EtsyDAL.MakeEtsyItem(newItemD.Listing_Id));
+                    items.Add(MakeRandomEtsyItem(dataD["results"][randomoD]["listing_id"].ToString()));
 
                     JObject dataD2 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 123)}&category=furniture&keywords=" + "chair", "active");
-                    EtsyItem newItemD2 = new EtsyItem();
-                    newItemD2.Listing_Id = dataD2["results"][randomoD]["listing_id"].ToString();
-                    //Check Width & Height before adding
-                    items.Add(EtsyDAL.MakeEtsyItem(newItemD2.Listing_Id));
-
+                    items.Add(MakeRandomEtsyItem(dataD2["results"][randomoD]["listing_id"].ToString()));
                     JObject dataD3 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 24)}&keywords=" + "clock", "active");
-                    EtsyItem newItemD3 = new EtsyItem();
-                    newItemD3.Listing_Id = dataD3["results"][randomoD]["listing_id"].ToString();
-                    //Check Width & Height before adding
-                    items.Add(EtsyDAL.MakeEtsyItem(newItemD3.Listing_Id));
-
+                    items.Add(MakeRandomEtsyItem(dataD3["results"][randomoD]["listing_id"].ToString()));
                     break;
                 case "Finished Basement":
                     Random randomResultF = new Random();
                     int randomoF = randomResultF.Next(0, 25);
-
                     JObject dataF = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 2005)}&keywords=" + "painting", "active");
-                    EtsyItem newItemF = new EtsyItem();
-                    newItemF.Listing_Id = dataF["results"][randomoF]["listing_id"].ToString();
-                    newItemF = EtsyDAL.MakeEtsyItem(newItemF.Listing_Id);
-                    //Check Width & Height before adding
-                    items.Add(newItemF);
-
+                    items.Add(MakeRandomEtsyItem(dataF["results"][randomoF]["listing_id"].ToString()));
                     JObject dataF2 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 123)}&category=furniture&keywords=" + "chair", "active");
-                    EtsyItem newItemF2 = new EtsyItem();
-                    newItemF2.Listing_Id = dataF2["results"][randomoF]["listing_id"].ToString();
-                    //Check Width & Height before adding
-                    items.Add(EtsyDAL.MakeEtsyItem(newItemF2.Listing_Id));
-
+                    items.Add(MakeRandomEtsyItem(dataF2["results"][randomoF]["listing_id"].ToString()));
                     JObject dataF3 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 123)}&keywords=" + "lamp", "active");
-                    EtsyItem newItemF3 = new EtsyItem();
-                    newItemF3.Listing_Id = dataF3["results"][randomoF]["listing_id"].ToString();
-                    //Check Width & Height before adding
-                    items.Add(EtsyDAL.MakeEtsyItem(newItemF3.Listing_Id));
-
+                    items.Add(MakeRandomEtsyItem(dataF3["results"][randomoF]["listing_id"].ToString()));
                     break;
                 default:
-                    
+
                     break;
             }
             thisSpace.furnList = items;
             return RedirectToAction("Index");
-        }    
+        }
 
         public ActionResult GenerateSpace(string Width, string Length, string Measurement)
         {
