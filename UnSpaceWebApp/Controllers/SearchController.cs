@@ -25,7 +25,7 @@ namespace UnSpaceWebApp.Models
         }
 
         [HttpPost]
-        public ActionResult FurnitureList( List<string> Left, List<string> Top, string SearchQ, string Color, string pageNo = "")
+        public ActionResult FurnitureList( List<string> Left, List<string> Top, string SearchQ, string Color, string MaxP, string pageNo = "")
         {
             SpaceController.SavePositions(Left, Top);
             List<EtsyItem> items = new List<EtsyItem>();
@@ -45,7 +45,13 @@ namespace UnSpaceWebApp.Models
                     SearchQ += "&color_accuracy=30";
 
                 }
+                if (MaxP != string.Empty)
+                {
+                    
+                    SearchQ += "&min_price= 0";
+                    SearchQ += "&max_price= " + MaxP;
 
+                }
                 JObject data = EtsyDAL.GetEtsyAPI(" &limit=5&category=furniture&keywords=" + SearchQ, "active");
                 if (SearchQ.Contains('&'))
                 {
