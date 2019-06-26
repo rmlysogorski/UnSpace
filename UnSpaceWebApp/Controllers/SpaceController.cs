@@ -249,7 +249,7 @@ namespace UnSpaceWebApp.Controllers
             return View("Index", thisSpace);
         }
 
-        public ActionResult AddFurn(string Listing_Id, List<string> Left, List<string> Top, string Measurement, string Width ="", string Length = "")
+        public ActionResult AddFurn(string Listing_Id, string Title, string Url, string Price, string Currency_Code, string ImageThumbUrl, string ImageFullUrl, List<string> Left, List<string> Top)
         {
             SavePositions(Left, Top);            
             if (TempData["prevPage"] != null)
@@ -267,14 +267,6 @@ namespace UnSpaceWebApp.Controllers
             EtsyItem etsyItem = new EtsyItem();
             etsyItem.Listing_Id = Listing_Id;
             etsyItem = EtsyDAL.MakeEtsyItem(etsyItem.Listing_Id);
-            if (Width != string.Empty)
-            {
-                etsyItem.Item_Width = EtsyDAL.CalculatePixels(Width, Measurement);
-            }
-            if (Length != string.Empty)
-            {
-                etsyItem.Item_Length = EtsyDAL.CalculatePixels(Length, Measurement);
-            }
             thisSpace.furnList.Add(etsyItem);
             return RedirectToAction("Index");
         }

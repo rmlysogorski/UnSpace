@@ -38,14 +38,12 @@ namespace UnSpaceWebApp.Models
                         SearchQ += "&page=" + pageNo;
                     }
                 }
-                if (Color != string.Empty)
+                if(Color != string.Empty)
                 {
-                    Color = Color.Replace("#", "");
                     SearchQ += "&color=" + Color;
-                    SearchQ += "&color_accuracy=30";
+                    SearchQ += "&color_wiggle=30";
 
                 }
-
                 JObject data = EtsyDAL.GetEtsyAPI(" &limit=5&category=furniture&keywords=" + SearchQ, "active");
                 if (SearchQ.Contains('&'))
                 {
@@ -64,11 +62,7 @@ namespace UnSpaceWebApp.Models
                 {
                     TempData["prevPage"] = null;
                 }
-
-                if(data["pagination"]["next_page"] != null)
-                {
-                    TempData["nextPage"] = (int)data["pagination"]["next_page"];
-                }
+                TempData["nextPage"] = (int)data["pagination"]["next_page"];
                 for (int i = 0; i < data["results"].Count(); i++)
                 {
                     EtsyItem newItem = new EtsyItem();

@@ -158,6 +158,8 @@ a {
         <div style="color:whitesmoke;">
             <p style="bottom:25px;position:fixed;padding-left:5px;">&copy; @DateTime.Now.Year - UnSpace</p>
         </div>
+        <a href="../Space/Index" />Make New Space</a>
+        <a href="../Home/Favorites"/>Favorites</a>
     </div>
 
     <div class="container body-content">
@@ -169,7 +171,7 @@ a {
         @RenderBody()
         <footer></footer>
     </div>
-
+    
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
