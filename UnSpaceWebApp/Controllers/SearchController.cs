@@ -45,7 +45,6 @@ namespace UnSpaceWebApp.Models
                     SearchQ += "&max_price= " + MaxP;
 
                 }
-
                 JObject data = EtsyDAL.GetEtsyAPI(" &limit=5&category=furniture&keywords=" + SearchQ, "active");
                 if (SearchQ.Contains('&'))
                 {
