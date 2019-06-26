@@ -3,57 +3,46 @@
     ViewBag.Title = "Favorites";
 }
 
-<h2>Favorites</h2>
+<style type="text/css">
+    .spaceName {
+        outline: none;
+        border: none;
+        text-decoration: none;
+        box-shadow: none;
+        font-size: 22px;
+        font-family: 'Segoe UI';
+        background-color:transparent;
+        color:royalblue;
+    }
+</style>
+<div style="text-align:center;">
+    <h2>Favorites</h2>
+</div>
 
-@if(Model != null)
+@if (Model != null)
+
 {
-    <form action="../Space/Index" method="post">
-        @for(var i=0; i < Model.Count; i++)
-        {
-            <div class="col-md-3">
-                <h2><button name="Id" type="submit" value="@Model[i].Id">@Model[i].Name</button></h2>
-                @foreach(var f in Model[i].furnList)
+    
+
+        <form action="../Space/Index" method="post">
+            @for (var i = 0; i < Model.Count; i++)
+            {
+            <div style="vertical-align:top;padding:15px;margin:0 auto;height:auto;background-color:whitesmoke;width:auto;display:inline-block;text-align:center;box-shadow:0 0 2px gray;border:2px solid #4169e1">
+                <button class="spaceName" name="Id" type="submit" value="@Model[i].Id">@Model[i].Name</button>
+                @foreach (var f in Model[i].furnList)
                 {
-                    <p><a href="@f.Url">@f.Title</a></p>
-                    <p>@f.Price @f.Currency_Code</p>
-                    <p><img src="@f.ImageThumbUrl" /></p>
+                    <div style="display:block; padding:10px;text-align:left;"> 
+                        <img style="display:inline-block;float:left;padding-right:10px;" src="@f.ImageThumbUrl" />
+                        <p><a href="@f.Url">@f.Title</a></p>
+                        <p>@f.Price @f.Currency_Code</p>
+                    </div>
+                    <div style="clear:both;"></div>
                 }
             </div>
-        }
-    </form>
+            }
+        </form>
 }
 
-@*@foreach (var product in Model)
-{
-        <div class="col-md-3" id="FavoritesView">            
-
-            <div class="dropdown">
-                <button onclick="myFunction()" class="dropbtn">Name</button>
-                <div id="myDropdown" class="dropdown-content">
-                    <a href="@product.">Link 1</a>
-                    <a href=""></a>
-                    <a href="@product.ImageFullUrl">@product.Title</a>
-                </div>
-            </div>
-            <div class="dropdown">
-                <button onclick="myFunction()" class="dropbtn">Title</button>
-                <div id="myDropdown" class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
-                </div>
-            </div>
-
-            <div>
-                <a href="..\UnSpaceDb\DeleteProduct?FavoriteId=" class="btn-danger">Delete</a>
-            </div>
 
 
-        </div>
-}*@
-
-        
-    
-
-    
 

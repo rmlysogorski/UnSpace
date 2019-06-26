@@ -4,9 +4,21 @@
     ViewBag.Title = "Let's UnSpace Your Space!";
 }
 <style type="text/css">
-    .X{
-       float:right;
-       right:0;
+    .X {
+        float: right;
+        right: 0;
+        display: inline-block;
+        position: absolute;
+        text-decoration: none;
+        border: none;
+        outline: none;
+        color: red;
+        font-weight: bold;
+        background-color: transparent;
+    }
+    .R{
+       float:left;
+       left:0;
        display:inline-block;
        position:absolute;
        text-decoration:none;
@@ -15,6 +27,14 @@
        color:red;
        font-weight:bold;
        background-color:transparent;
+    }
+    hr {
+        border: 0;
+        clear:both;
+        display:block;
+        width: 90%;                
+        background-color:gray;
+        height: 1px;
     }
 </style>
 <script type="text/javascript">
@@ -84,7 +104,16 @@
             //document.getElementById(idTop).value = document.getElementById(furnId).style.top;
         }
     }
+
+    function RotateItem(imgId) {
+        var width = imgId.width;
+        var height = imgId.height;
+        imgId.width = height + 2;
+        imgId.height = width + 2;
+    }
+    
 </script>
+
 
 
 <div style="padding:15px;margin:0 auto;background-color:whitesmoke;width:auto;display:block;text-align:center;box-shadow:0 0 2px gray;border:2px solid #4169e1">
@@ -102,6 +131,7 @@
                         for (var i = 0; i < Model.furnList.Count; i++)
                         {
                             var furnId = "furn" + i;
+                            var imgId = "img" + i;
                             <form action="../Space/RemoveFurn" method="post">
                                 @if (Model.furnList.Count > 0)
                                 {
@@ -116,15 +146,24 @@
                                 }
                                 <div style="left:@((Model.furnList[i].Positions.Left) == null?"0":Model.furnList[i].Positions.Left);
                                         top: @((Model.furnList[i].Positions.Top) == null? "0":Model.furnList[i].Positions.Top);"
-                                     id="@furnId"><button onclick="GetPositions()" class="X">X</button>
-                                <img  height="@(Model.furnList[i].Item_Length)px" width = "@(Model.furnList[i].Item_Width)px" src="@(Model.furnList[i].ImageThumbUrl)" /></div>
+                                     id="@furnId">
+                                    <button onclick="GetPositions()" class="X">X</button>                                    
+                                    <button type="button" onclick="RotateItem(@imgId)" class="R"><img width="20" height="20" src="~/Content/Images/rotate-arrow.png" /></button>
+                                    <img onclick="currentSlide(@(i+1))"
+                                         style="border:1px solid black"
+                                         id="@imgId"
+                                         height="@(Model.furnList[i].Item_Length)px"
+                                         width="@(Model.furnList[i].Item_Width)px"
+                                         src="~/Content/Images/dot.gif" />
+                                    <span style="padding:0;margin:0;position:absolute;top:50%;transform:translateY(-50%);left:50%;transform:translateX(-50%);text-align:center;width:20px;height:20px;line-height:20px;color:whitesmoke;background-color:black;border-radius:20px;font-size:12px;">@(i + 1)</span>
+                                </div>
+
                                 <input name="Index" type="text" value="@(i)" hidden />
                             </form>
                             <script>
                                 var furnId = 'furn' + count;
                                 count++;
                                 DisplayFurn(furnId);
-
                             </script>
                         }
                     }
@@ -142,7 +181,7 @@
                         margin: auto;
                     }
 
-                    
+
 
                     /* Next & previous buttons */
                     .prev, .next {
@@ -166,6 +205,11 @@
                         border-radius: 3px 0 0 3px;
                     }
 
+                    .prev {
+                        left: 0;
+                        border-radius: 3px 0 0 3px;
+                    }
+
                         /* On hover, add a black background color with a little bit see-through */
                         .prev:hover, .next:hover {
                             background-color: royalblue;
@@ -184,11 +228,15 @@
 
                     /* Number text (1/3 etc) */
                     .numbertext {
-                        color: #f2f2f2;
-                        font-size: 12px;
-                        padding: 8px 12px;
-                        position: absolute;
-                        top: 0;
+                        color: whitesmoke;
+                        font-size: 40px;
+                        background-color: black;
+                        height: 50px;
+                        width: 50px;
+                        border-radius: 50%;
+                        line-height: 50px;
+                        display: inline-block;
+
                     }
 
                     /* The dots/bullets/indicators */
@@ -215,33 +263,36 @@
                         animation-duration: .5s;
                     }
                 </style>
-                <div class="slideshow-container">
 
-                    <!-- Full-width images with number and caption text -->
-                    @if (Model.furnList.Count > 0)
-                    {
-                        for (var i = 0; i < Model.furnList.Count; i++)
+
+                <!-- Full-width images with number and caption text -->
+                if (Model.furnList.Count > 0)
+                {
+                    <br />
+                    <div style="padding:0 55px" class="slideshow-container">
+
+                        @for (var i = 0; i < Model.furnList.Count; i++)
                         {
                             <div class="mySlides">
-                                <div class="numbertext">1 / 3</div>
-                                <img src="@(Model.furnList[i].ImageThumbUrl)" style="width:25%">
-                                <div class="text">@(Model.furnList[i].Title)</div>
+                                <div style="float:left;" class="numbertext">@(i + 1)</div>
+                                <img style="display:block;float:left;padding:5px;" src="@(Model.furnList[i].ImageThumbUrl)">
+                                <p style="display:block;">@(Model.furnList[i].Title)</p>
                             </div>
                         }
-                    }
-
                         <!-- Next and previous buttons -->
                         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
                         <a class="next" onclick="plusSlides(1)">&#10095;</a>
                     </div>
-                <br>
+                    <br />
 
-                <!-- The dots/circles -->
-                <div style="text-align:center">
-                    <span class="dot" onclick="currentSlide(1)"></span>
-                    <span class="dot" onclick="currentSlide(2)"></span>
-                    <span class="dot" onclick="currentSlide(3)"></span>
-                </div>
+                    <!-- The dots/circles -->
+                    <div style="text-align:center;clear:both">
+                        @for (var i = 0; i < Model.furnList.Count; i++)
+                        {
+                            <span class="dot" onclick="currentSlide(@(i+1))"></span>
+                        }
+                    </div>
+                }
 
                 <script type="text/javascript">
                     var slideIndex = 1;
@@ -288,21 +339,25 @@
                             }
                         }
 
-                        @Html.Label("Name", "Give it a name:", new { @class = "control-label", @style = "margin-right:10px;"})
-                        @Html.TextBox("Name", ((Model.Name != string.Empty)? Model.Name : ""), new { @class = "form-control", @style = "margin-right:10px;" })
+                        @Html.Label("Name", "Give it a name:", new { @class = "control-label", @style = "margin-right:10px;" })
+                        @Html.TextBox("Name", ((Model.Name != string.Empty) ? Model.Name : ""), new { @class = "form-control", @style = "margin-right:10px;" })
 
                         <button class="btn-orange" onclick="GetPositions()" value="submit">Save</button>
                     </form>
                 </div>
+
+                <hr>
                 <div>
                     <form action="..\Space\Autofill" method="post">
-                        <button type="submit" value="Living Room" name="benjamin" class="btn-danger">Living Room AutoFill</button>
-                        <button type="submit" value="Bed Room" name="benjamin" class="btn-danger">Bed Room AutoFill</button>
-                        <button type="submit" value="Dinning Room" name="benjamin" class="btn-danger">Dinning Room AutoFill</button><br />
-                        <button type="submit" value="Kitchen" name="benjamin" class="btn-danger">Kitchen AutoFill</button>
-                        <button type="submit" value="Finished Basement" name="benjamin" class="btn-danger">Finished Basement AutoFill</button>
+                        <h4>Try one of our Auto-fill options for some random furniture ideas:</h4>
+                        <button type="submit" value="Living Room" name="benjamin" class="btn-blue">Living Room</button>
+                        <button type="submit" value="Bed Room" name="benjamin" class="btn-blue">Bed Room</button>
+                        <button type="submit" value="Dinning Room" name="benjamin" class="btn-blue">Dinning Room</button><br />
+                        <button type="submit" value="Kitchen" name="benjamin" class="btn-blue">Kitchen</button>
+                        <button type="submit" value="Finished Basement" name="benjamin" class="btn-blue">Finished Basement</button>
                     </form>
                 </div>
+                <hr>
                 <div id="searchFurn" class="spaceForm">
                     @using (@Html.BeginForm("FurnitureList", "Search", FormMethod.Post, new { @class = "form-inline", @style = "padding:10px" }))
                     {
@@ -319,9 +374,10 @@
                         }
                         @Html.Label("SearchQ", "Furniture Type:", new { @class = "control-label", @style = "margin-right:10px;" })
                         @Html.TextBox("SearchQ", "", new { @class = "form-control", @style = "margin-right:10px;" })
-                        <input type="color" + name="Color" /><br />
+                        <br />
                         @Html.Label("MaxP", "Max Price:", new { @class = "control-label", @style = "margin-right:10px;" })
                         @Html.TextBox("MaxP", "", new { @class = "form-control", @style = "margin-right:10px;" })
+
 
                         <button type="submit" id="button" class="btn-orange button" onclick="GetPositions()">Search</button>
                     }
@@ -329,13 +385,14 @@
                 <div class="items">
                     @if (Model.items.Count > 0)
                     {
-                        <div style="width:700px;display:block;margin:0 auto;">
+                    <div style="width:auto;display:block;margin:0 auto;">
 
 
-                            @foreach (var m in Model.items)
-                            {
-                                <br />
-                                <hr style="background-color:black;height:1px;clear:both;" />
+                        @foreach (var m in Model.items)
+                        {
+                            <br />
+                            <hr>
+                            <div style="width:700px;display:block;margin:0 auto;">
                                 <form action="../Space/AddFurn" method="post">
                                     @if (Model.furnList.Count > 0)
                                     {
@@ -349,62 +406,79 @@
                                         }
                                     }
 
+                                    <input type="text" name="Listing_Id" value="@(m.Listing_Id)" hidden />
+                                    <input type="text" name="Title" value="@(m.Title)" hidden />
+                                    <input type="text" name="Description" value="@(m.Description)" hidden />
+                                    <input type="text" name="Url" value="@(m.Url)" hidden />
+                                    <input type="text" name="Price" value="@(m.Price)" hidden />
+                                    <input type="text" name="Currency_Code" value="@(m.Currency_Code)" hidden />
+                                    <input type="text" name="ImageThumbUrl" value="@(m.ImageThumbUrl)" hidden />
+                                    <input type="text" name="ImageFullUrl" value="@(m.ImageFullUrl)" hidden />
+                                    <div style="display:block;float:left;">
+                                        <img style="padding:10px;" src="@m.ImageThumbUrl" />
+                                    </div>
+                                    <div>
+                                        <p><a href="@m.Url">@m.Title</a></p>
+                                        <p style="text-align:left">@m.Description</p>
+                                        <p>@m.Price @m.Currency_Code</p>
+                                    </div>
+                                    <div style="clear:both">
+
+                                        @if (m.Item_Width == "0")
+                                        {
+                                            <p style="font-style:italic">We're sorry, this item's dimensions aren't in our database.</p>
+                                            <label for="Width">Width: </label>
+                                            <input type='number' name='Width' />
+
+                                        }
+                                        @if (m.Item_Length == "0")
+                                        {
+                                            <label for="Length">Length</label>
+                                            <input type='number' name='Length' />
+                                            @Html.DropDownList("Measurement",
+                                                    new SelectList(Enum.GetValues(typeof(TypesOfMeasurement))),
+                                                    new { @style = "width:50px" })
+                                        }
+
+                                        <button class="btn-orange" type="submit" onclick="GetPositions()">Add</button>
+                                    </div>
+                                </form>
+                                </div>
+                                <div style="clear:both"></div>
                                 }
-                                <input type="text" name="Listing_Id" value="@(m.Listing_Id)" hidden />
-                                <input type="text" name="Title" value="@(m.Title)" hidden />
-                                <input type="text" name="Description" value="@(m.Description)" hidden />
-                                <input type="text" name="Url" value="@(m.Url)" hidden />
-                                <input type="text" name="Price" value="@(m.Price)" hidden />
-                                <input type="text" name="Currency_Code" value="@(m.Currency_Code)" hidden />
-                                <input type="text" name="ImageThumbUrl" value="@(m.ImageThumbUrl)" hidden />
-                                <input type="text" name="ImageFullUrl" value="@(m.ImageFullUrl)" hidden />
-                                <div style="display:block;float:left;">
-                                    <img style="padding:10px;" src="@m.ImageThumbUrl" />
-                                    <p>@m.Item_Length @m.Item_Width</p>
-                                </div>
-                                <div>
-                                    <p><a href="@m.Url">@m.Title</a></p>
-                                    <p>@m.Description</p>
-                                    <p>@m.Price @m.Currency_Code</p>
-                                </div> 
-                                <div style="clear:both">
-                                    <button class="btn-orange" type="submit" onclick="GetPositions()">Add</button>
-                                </div>
-                            </form>
-                            <div style="clear:both"></div>
-                        }
-                            <div style="height:10px;clear:both"></div>
+                                <div style="height:10px;clear:both"></div>
 
-                        </div>
+                            </div>
 
-                        if (Model.items != null)
-                        {
-                            <form action="../Search/FurnitureList" method="post" style="display:block;">
-                                <input type="text" name="SearchQ" value="@ViewBag.SearchQ" hidden />
-                                @if (Model.furnList.Count > 0)
-                                {
-                                    for (var i = 0; i < Model.furnList.Count; i++)
+
+                            if (Model.items != null)
+                            {
+                                <form action="../Search/FurnitureList" method="post" style="display:block;">
+                                    <input type="text" name="SearchQ" value="@ViewBag.SearchQ" hidden />
+                                    @if (Model.furnList.Count > 0)
                                     {
-                                        var posIdLeft = "pos" + i + "Left";
-                                        var posIdTop = "pos" + i + "Top";
-                                        <input class="@(posIdLeft)" name="Left" type="text" hidden />
-                                        <input class="@(posIdTop)" name="Top" type="text" hidden />
-                                        <input name="Listings" type="text" value="@(Model.furnList[i].Listing_Id)" hidden />
+                                        for (var i = 0; i < Model.furnList.Count; i++)
+                                        {
+                                            var posIdLeft = "pos" + i + "Left";
+                                            var posIdTop = "pos" + i + "Top";
+                                            <input class="@(posIdLeft)" name="Left" type="text" hidden />
+                                            <input class="@(posIdTop)" name="Top" type="text" hidden />
+                                            <input name="Listings" type="text" value="@(Model.furnList[i].Listing_Id)" hidden />
+                                        }
                                     }
-                                }
-                                @if (ViewBag.PrevPage != null)
-                                {
-                                    <button class="btn-orange" type="submit" name="pageNo" onclick="GetPositions()" value="@ViewBag.PrevPage">Prev</button>
-                                }
+                                    @if (ViewBag.PrevPage != null)
+                                    {
+                                        <button class="btn-orange" type="submit" name="pageNo" onclick="GetPositions()" value="@ViewBag.PrevPage">Prev</button>
+                                    }
 
-                                @if (ViewBag.NextPage != null)
-                                {
-                                    <button class="btn-orange" type="submit" name="pageNo" onclick="GetPositions()" value="@ViewBag.NextPage">Next</button>
-                                }
-                            </form>
+                                    @if (ViewBag.NextPage != null)
+                                    {
+                                        <button class="btn-orange" type="submit" name="pageNo" onclick="GetPositions()" value="@ViewBag.NextPage">Next</button>
+                                    }
+                                </form>
+                            }
                         }
-                    }
-                </div>
+                    </div>
             }
         }
 

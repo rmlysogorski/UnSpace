@@ -64,7 +64,7 @@ body {
      border-radius:2em;
      box-sizing: border-box;
      text-decoration:none;
-     font-family:'Roboto',sans-serif;
+     font-family:'Segoe UI',sans-serif;
      font-weight:300;
      color:royalblue;
      background-color:orange;
@@ -80,6 +80,32 @@ body {
      border-color: rgba(255,255,255,1);
      background-color:royalblue;
      color:whitesmoke;
+}
+
+.btn-blue {
+     display:inline-block;
+     padding:0.3em 1.2em;
+     margin:0 0.1em 0.1em 0;
+     border:0.16em solid rgba(255,255,255,0);
+     border-radius:2em;
+     box-sizing: border-box;
+     text-decoration:none;
+     font-family:'Segoe UI',sans-serif;
+     font-weight:300;
+     color:whitesmoke;
+     background-color:royalblue;
+     text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
+     text-align:center;
+     transition: all 0.2s;
+     width:15em;
+     outline:none;
+     box-shadow:none;
+}
+
+.btn-blue:hover{
+     border-color: rgba(255,255,255,1);
+     background-color:deepskyblue;
+     color:black;
 }
 
 @@media all and (max-width:30em){
@@ -128,10 +154,16 @@ a {
             <span style="font-weight:bold;font-size:1em;color:skyblue;-webkit-text-stroke-color:white;-webkit-text-stroke-width:1px;">Un</span>
             <span style="font-weight:bold;font-size:1em;color:orange;-webkit-text-stroke-color:white;-webkit-text-stroke-width:1px;">Space</span>
         </a>
+        @if (User.Identity.IsAuthenticated)
+        {            
+            <a href="../Space/MakeNewSpace" >New Space</a>
+            <a href="../Home/Favorites" >Favorites</a>
+        }
         @Html.Partial("_LoginPartial")
         <div style="color:whitesmoke;">
             <p style="bottom:25px;position:fixed;padding-left:5px;">&copy; @DateTime.Now.Year - UnSpace</p>
         </div>
+
     </div>
 
     <div class="container body-content">
@@ -143,7 +175,7 @@ a {
         @RenderBody()
         <footer></footer>
     </div>
-
+    
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
