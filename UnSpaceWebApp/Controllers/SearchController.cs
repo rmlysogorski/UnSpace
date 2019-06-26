@@ -25,11 +25,7 @@ namespace UnSpaceWebApp.Models
         }
 
         [HttpPost]
-<<<<<<< HEAD
-        public ActionResult FurnitureList( List<string> Left, List<string> Top, string SearchQ, string Color, string MaxP, string pageNo = "")
-=======
-        public ActionResult FurnitureList( List<string> Left, List<string> Top, string SearchQ, string Color = "", string pageNo = "")
->>>>>>> d6dcbf19222be07cb5e8bf69d0e97eb83a76dfd5
+        public ActionResult FurnitureList( List<string> Left, List<string> Top, string SearchQ, string MaxP, string pageNo = "")
         {
             SpaceController.SavePositions(Left, Top);
             List<EtsyItem> items = new List<EtsyItem>();
@@ -41,13 +37,6 @@ namespace UnSpaceWebApp.Models
                     {
                         SearchQ += "&page=" + pageNo;
                     }
-                }
-                if (Color != string.Empty)
-                {
-                    Color = Color.Replace("#", "");
-                    SearchQ += "&color=" + Color;
-                    SearchQ += "&color_accuracy=30";
-
                 }
                 if (MaxP != string.Empty)
                 {
@@ -74,11 +63,7 @@ namespace UnSpaceWebApp.Models
                 {
                     TempData["prevPage"] = null;
                 }
-
-                if(data["pagination"]["next_page"] != null)
-                {
-                    TempData["nextPage"] = (int)data["pagination"]["next_page"];
-                }
+                TempData["nextPage"] = (int)data["pagination"]["next_page"];
                 for (int i = 0; i < data["results"].Count(); i++)
                 {
                     EtsyItem newItem = new EtsyItem();
