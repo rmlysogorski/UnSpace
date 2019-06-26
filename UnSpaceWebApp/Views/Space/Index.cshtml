@@ -175,12 +175,6 @@
                             <div style="left:@((Model.furnList[i].Positions.Left) == null?"0":Model.furnList[i].Positions.Left);
                                         top: @((Model.furnList[i].Positions.Top) == null? "0":Model.furnList[i].Positions.Top);"
                                      id="@furnId">
-                                    <button onclick="GetPositions()" class="X">X</button>
-                                    <div id="container">
-                                        <img onclick="Rotate" id="draggable" height=" @(Model.furnList[i].Item_Length)px" width="@(Model.furnList[i].Item_Width)px" src="@(Model.furnList[i].ImageThumbUrl)" />
-                                    </div>
-                                </div>
-                                        id="@furnId">
                                 <button onclick="GetPositions()" class="X">X</button>
                                 <button type="button" onclick="RotateItem(@imgId)" class="R"><img width="20" height="20" src="~/Content/Images/rotate-arrow.png" /></button>
                                 <img onclick="currentSlide(@(i+1))" 
@@ -429,16 +423,8 @@
                                     }
                                     }
                                     <input type="text" name="Listing_Id" value="@(m.Listing_Id)" hidden />
-                                    <input type="text" name="Title" value="@(m.Title)" hidden />
-                                    <input type="text" name="Description" value="@(m.Description)" hidden />
-                                    <input type="text" name="Url" value="@(m.Url)" hidden />
-                                    <input type="text" name="Price" value="@(m.Price)" hidden />
-                                    <input type="text" name="Currency_Code" value="@(m.Currency_Code)" hidden />
-                                    <input type="text" name="ImageThumbUrl" value="@(m.ImageThumbUrl)" hidden />
-                                    <input type="text" name="ImageFullUrl" value="@(m.ImageFullUrl)" hidden />
                                     <div style="display:block;float:left;">
                                         <img style="padding:10px;" src="@m.ImageThumbUrl" />
-                                        <p>@m.Item_Length @m.Item_Width</p>
                                     </div>
                                     <div>
                                         <p><a href="@m.Url">@m.Title</a></p>
@@ -446,45 +432,29 @@
                                         <p>@m.Price @m.Currency_Code</p>
                                     </div>
                                     <div style="clear:both">
-                                        <button class="btn-orange" type="submit" onclick="GetPositions()">Add</button>
-                                    </div>
+                                        @if (m.Item_Width == "0")
+                                        {
+                                            <p style="font-style:italic">We're sorry, this item's dimensions aren't in our database.</p>
+                                            <label for="Width">Width: </label>
+                                            <input type='number' name='Width' />
+
+                                        }
+                                        @if (m.Item_Length == "0")
+                                        {
+                                            <label for="Length">Length</label>
+                                            <input type='number' name='Length' />
+                                            @Html.DropDownList("Measurement",
+                                                    new SelectList(Enum.GetValues(typeof(TypesOfMeasurement))),
+                                                    new { @style = "width:50px" })
+                                        }
+                                            <button class="btn-orange" type="submit" onclick="GetPositions()">Add</button>
+                                        </div>
                                 </form>
                                 <div style="clear:both"></div>
-                            }
-                                <input type="text" name="Listing_Id" value="@(m.Listing_Id)" hidden />
-                                <div style="display:block;float:left;">
-                                    <img style="padding:10px;" src="@m.ImageThumbUrl" />
-                                </div>
-                                <div>
-                                    <p><a href="@m.Url">@m.Title</a></p>
-                                    <p>@m.Description</p>
-                                    <p>@m.Price @m.Currency_Code</p>
-                                </div> 
-                                <div style="clear:both">
-                                    @if (m.Item_Width == "0")
-                                    {
-                                        <p style="font-style:italic">We're sorry, this item's dimensions aren't in our database.</p>
-                                        <label for="Width">Width: </label>
-                                        <input type='number' name='Width' />
-
-                                    }
-                                    @if (m.Item_Length == "0")
-                                    {
-                                        <label for="Length">Length</label>
-                                        <input type='number' name='Length' />
-                                        @Html.DropDownList("Measurement",
-                                                new SelectList(Enum.GetValues(typeof(TypesOfMeasurement))),
-                                                new { @style = "width:50px" })
-                                    }
-
-                                    <button class="btn-orange" type="submit" onclick="GetPositions()">Add</button>
-                                </div>
-                            </form>
-                            <div style="clear:both"></div>
-                        }
+                            }                               
                             <div style="height:10px;clear:both"></div>
 
-                        </div>
+                    </div>
 
                         if (Model.items != null)
                         {
