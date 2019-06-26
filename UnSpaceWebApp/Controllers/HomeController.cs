@@ -30,7 +30,7 @@ namespace UnSpaceWebApp.Controllers
             {
                 MySpace addSpace = new MySpace();
                 addSpace.Name = u.Name;
-                addSpace.furnList = sc.GetSavedSpace(u);
+                addSpace.furnList = sc.GetSavedSpaceFurn(u);
                 addSpace.Id = u.Id.ToString();
                 mySpaces.Add(addSpace);
                 count++;

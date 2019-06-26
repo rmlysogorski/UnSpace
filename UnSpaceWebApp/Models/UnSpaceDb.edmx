@@ -5,6 +5,24 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="UnSpaceDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="EtsyItemDb">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Listing_Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Price" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Currency_Code" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Item_Length" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Item_Width" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Item_Height" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Item_Dimensions_Unit" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Url" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ImageThumbUrl" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ImageFullUrl" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
         <EntityType Name="UserSpaces">
           <Key>
             <PropertyRef Name="Id" />
@@ -18,6 +36,7 @@
           <Property Name="SpaceDimensions" Type="nvarchar(max)" />
         </EntityType>
         <EntityContainer Name="UnSpaceDbModelStoreContainer">
+          <EntitySet Name="EtsyItemDb" EntityType="Self.EtsyItemDb" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSpaces" EntityType="Self.UserSpaces" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -26,6 +45,7 @@
       <Schema Namespace="UnSpaceDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="UnSpaceDbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="UserSpaces" EntityType="UnSpaceDbModel.UserSpace" />
+          <EntitySet Name="EtsyItemDbs" EntityType="UnSpaceDbModel.EtsyItemDb" />
         </EntityContainer>
         <EntityType Name="UserSpace">
           <Key>
@@ -38,6 +58,24 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Positions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="SpaceDimensions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="EtsyItemDb">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Listing_Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Currency_Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Item_Length" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Item_Width" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Item_Height" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Item_Dimensions_Unit" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Url" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImageThumbUrl" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImageFullUrl" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -54,6 +92,25 @@
                 <ScalarProperty Name="QRCode" ColumnName="QRCode" />
                 <ScalarProperty Name="Listing" ColumnName="Listing" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EtsyItemDbs">
+            <EntityTypeMapping TypeName="UnSpaceDbModel.EtsyItemDb">
+              <MappingFragment StoreEntitySet="EtsyItemDb">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ImageFullUrl" ColumnName="ImageFullUrl" />
+                <ScalarProperty Name="ImageThumbUrl" ColumnName="ImageThumbUrl" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="Item_Dimensions_Unit" ColumnName="Item_Dimensions_Unit" />
+                <ScalarProperty Name="Item_Height" ColumnName="Item_Height" />
+                <ScalarProperty Name="Item_Width" ColumnName="Item_Width" />
+                <ScalarProperty Name="Item_Length" ColumnName="Item_Length" />
+                <ScalarProperty Name="Currency_Code" ColumnName="Currency_Code" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Listing_Id" ColumnName="Listing_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

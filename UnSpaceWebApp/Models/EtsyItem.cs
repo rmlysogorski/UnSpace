@@ -7,7 +7,7 @@ namespace UnSpaceWebApp.Models
 {
     public class EtsyItem
     {
-        public string Listing_Id{ set; get;}
+        public string Listing_Id { set; get; }
         public string Title { set; get; }
         public string Price { set; get; }
         public string Currency_Code { set; get; }
@@ -18,6 +18,7 @@ namespace UnSpaceWebApp.Models
         public string Url { set; get; }
         public string ImageThumbUrl { set; get; }
         public string ImageFullUrl { set; get; }
+        public string Description { set; get; }
 
         public FurnPosition Positions = new FurnPosition();
 
