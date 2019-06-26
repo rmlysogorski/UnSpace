@@ -25,12 +25,12 @@
         <form action="../Space/Index" method="post">
             @for (var i = 0; i < Model.Count; i++)
             {
-            <div style="padding:15px;margin:0 auto;background-color:whitesmoke;width:auto;display:block;text-align:center;box-shadow:0 0 2px gray;border:2px solid #4169e1">
+            <div style="vertical-align:top;padding:15px;margin:0 auto;height:auto;background-color:whitesmoke;width:auto;display:inline-block;text-align:center;box-shadow:0 0 2px gray;border:2px solid #4169e1">
                 <button class="spaceName" name="Id" type="submit" value="@Model[i].Id">@Model[i].Name</button>
                 @foreach (var f in Model[i].furnList)
                 {
                     <div style="display:block; padding:10px;text-align:left;"> 
-                        <img style="display:inline-block;float:left;" src="@f.ImageThumbUrl" />
+                        <img style="display:inline-block;float:left;padding-right:10px;" src="@f.ImageThumbUrl" />
                         <p><a href="@f.Url">@f.Title</a></p>
                         <p>@f.Price @f.Currency_Code</p>
                     </div>
