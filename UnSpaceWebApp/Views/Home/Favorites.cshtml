@@ -3,7 +3,6 @@
     ViewBag.Title = "Favorites";
 }
 
-<h2>Favorites</h2>
 
 @if(Model != null)
 {
@@ -23,34 +22,6 @@
     </form>
 }
 
-@*@foreach (var product in Model)
-{
-        <div class="col-md-3" id="FavoritesView">            
-
-            <div class="dropdown">
-                <button onclick="myFunction()" class="dropbtn">Name</button>
-                <div id="myDropdown" class="dropdown-content">
-                    <a href="@product.">Link 1</a>
-                    <a href=""></a>
-                    <a href="@product.ImageFullUrl">@product.Title</a>
-                </div>
-            </div>
-            <div class="dropdown">
-                <button onclick="myFunction()" class="dropbtn">Title</button>
-                <div id="myDropdown" class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
-                </div>
-            </div>
-
-            <div>
-                <a href="..\UnSpaceDb\DeleteProduct?FavoriteId=" class="btn-danger">Delete</a>
-            </div>
-
-
-        </div>
-}*@
 
         
     
