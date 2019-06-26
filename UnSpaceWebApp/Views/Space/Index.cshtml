@@ -16,6 +16,18 @@
         font-weight: bold;
         background-color: transparent;
     }
+    .R{
+       float:left;
+       left:0;
+       display:inline-block;
+       position:absolute;
+       text-decoration:none;
+       border:none;
+       outline:none;
+       color:red;
+       font-weight:bold;
+       background-color:transparent;
+    }
 </style>
 <script type="text/javascript">
     var count = 0;
@@ -58,19 +70,19 @@
     function GetPositions() {
         //var leftList = document.getElementsByName("Left");
         //var topList = document.getElementsByName("Top");
-        console.log(count);
+        //console.log(count);
         var i;
         for (i = 0; i <= count; i++) {
-            console.log("i: " + i);
+            //console.log("i: " + i);
             var idLeft = "pos" + i + "Left";
             var idTop = "pos" + i + "Top";
             var furnId = "furn" + i;
             var listLeft = document.getElementsByClassName(idLeft);
-            console.log("listLeft: " + listLeft.length);
+            //console.log("listLeft: " + listLeft.length);
             var listTop = document.getElementsByClassName(idTop);
             var j;
             for (j = 0; j < listLeft.length; j++) {
-                console.log("j: " + j);
+                //console.log("j: " + j);
                 listLeft[j].value = document.getElementById(furnId).style.left;
                 listTop[j].value = document.getElementById(furnId).style.top;
             }
@@ -84,7 +96,14 @@
             //document.getElementById(idTop).value = document.getElementById(furnId).style.top;
         }
     }
-    
+
+    function RotateItem(imgId) {
+        var width = imgId.width;
+        var height = imgId.height;
+        imgId.width = height + 2;
+        imgId.height = width + 2;
+    }
+
 </script>
 @*<script>
     function Rotate() {
@@ -140,6 +159,7 @@
                         for (var i = 0; i < Model.furnList.Count; i++)
                         {
                             var furnId = "furn" + i;
+                            var imgId = "img" + i;
                             <form action="../Space/RemoveFurn" method="post">
                                 @if (Model.furnList.Count > 0)
                                 {
@@ -152,7 +172,7 @@
                                         <input name="Listings" type="text" value="@(Model.furnList[j].Listing_Id)" hidden />
                                     }
                                 }
-                                <div style="left:@((Model.furnList[i].Positions.Left) == null?"0":Model.furnList[i].Positions.Left);
+                            <div style="left:@((Model.furnList[i].Positions.Left) == null?"0":Model.furnList[i].Positions.Left);
                                         top: @((Model.furnList[i].Positions.Top) == null? "0":Model.furnList[i].Positions.Top);"
                                      id="@furnId">
                                     <button onclick="GetPositions()" class="X">X</button>
@@ -160,6 +180,18 @@
                                         <img onclick="Rotate" id="draggable" height=" @(Model.furnList[i].Item_Length)px" width="@(Model.furnList[i].Item_Width)px" src="@(Model.furnList[i].ImageThumbUrl)" />
                                     </div>
                                 </div>
+                                        id="@furnId">
+                                <button onclick="GetPositions()" class="X">X</button>
+                                <button type="button" onclick="RotateItem(@imgId)" class="R"><img width="20" height="20" src="~/Content/Images/rotate-arrow.png" /></button>
+                                <img onclick="currentSlide(@(i+1))" 
+                                     style="border:1px solid black" 
+                                     id="@imgId" 
+                                     height="@(Model.furnList[i].Item_Length)px" 
+                                     width="@(Model.furnList[i].Item_Width)px" 
+                                     src="~/Content/Images/dot.gif" />
+                                <span style="padding:0;margin:0;position:absolute;top:50%;transform:translateY(-50%);left:50%;transform:translateX(-50%);text-align:center;width:20px;height:20px;line-height:20px;color:whitesmoke;background-color:black;border-radius:20px;font-size:12px;">@(i+1)</span>
+                            </div>
+
                                 <input name="Index" type="text" value="@(i)" hidden />
                             </form>
                             <script>
@@ -178,9 +210,9 @@
 
                     /* Slideshow container */
                     .slideshow-container {
-                        max-width: 500px;
+                        max-width: 700px;
                         position: relative;
-                        margin: auto;
+                        margin: 0 auto;
                     }
 
 
@@ -207,6 +239,11 @@
                         border-radius: 3px 0 0 3px;
                     }
 
+                    .prev{
+                        left:0;
+                        border-radius: 3px 0 0 3px;
+                    }
+
                         /* On hover, add a black background color with a little bit see-through */
                         .prev:hover, .next:hover {
                             background-color: royalblue;
@@ -225,11 +262,14 @@
 
                     /* Number text (1/3 etc) */
                     .numbertext {
-                        color: #f2f2f2;
-                        font-size: 12px;
-                        padding: 8px 12px;
-                        position: absolute;
-                        top: 0;
+                        color: whitesmoke;
+                        font-size: 40px;
+                        background-color:black;
+                        height:50px;
+                        width:50px;
+                        border-radius:50%;
+                        line-height:50px;
+                        display:inline-block;
                     }
 
                     /* The dots/bullets/indicators */
@@ -256,7 +296,8 @@
                         animation-duration: .5s;
                     }
                 </style>
-                <div class="slideshow-container">
+                <br />
+                <div style="padding:0 55px" class="slideshow-container">
 
                     <!-- Full-width images with number and caption text -->
                     @if (Model.furnList.Count > 0)
@@ -264,9 +305,9 @@
                         for (var i = 0; i < Model.furnList.Count; i++)
                         {
                             <div class="mySlides">
-                                <div class="numbertext">1 / 3</div>
-                                <img src="@(Model.furnList[i].ImageThumbUrl)" style="width:25%">
-                                <div class="text">@(Model.furnList[i].Title)</div>
+                                <div style="float:left;" class="numbertext">@(i+1)</div>
+                                <img style="display:block;float:left;padding:5px;" src="@(Model.furnList[i].ImageThumbUrl)">
+                                <p style="display:block;">@(Model.furnList[i].Title)</p>
                             </div>
                         }
                     }
@@ -278,7 +319,7 @@
                 <br>
 
                 <!-- The dots/circles -->
-                <div style="text-align:center">
+                <div style="text-align:center;clear:both">
                     <span class="dot" onclick="currentSlide(1)"></span>
                     <span class="dot" onclick="currentSlide(2)"></span>
                     <span class="dot" onclick="currentSlide(3)"></span>
@@ -360,6 +401,7 @@
                         }
                         @Html.Label("SearchQ", "Furniture Type:", new { @class = "control-label", @style = "margin-right:10px;" })
                         @Html.TextBox("SearchQ", "", new { @class = "form-control", @style = "margin-right:10px;" })
+                        <input type="color" name="Color" />
                         <button type="submit" id="button" class="btn-orange button" onclick="GetPositions()">Search</button>
                     }
                 </div>
@@ -385,7 +427,6 @@
                                             <input name="Listings" type="text" value="@(Model.furnList[i].Listing_Id)" hidden />
                                         }
                                     }
-
                                     }
                                     <input type="text" name="Listing_Id" value="@(m.Listing_Id)" hidden />
                                     <input type="text" name="Title" value="@(m.Title)" hidden />
@@ -410,6 +451,37 @@
                                 </form>
                                 <div style="clear:both"></div>
                             }
+                                <input type="text" name="Listing_Id" value="@(m.Listing_Id)" hidden />
+                                <div style="display:block;float:left;">
+                                    <img style="padding:10px;" src="@m.ImageThumbUrl" />
+                                </div>
+                                <div>
+                                    <p><a href="@m.Url">@m.Title</a></p>
+                                    <p>@m.Description</p>
+                                    <p>@m.Price @m.Currency_Code</p>
+                                </div> 
+                                <div style="clear:both">
+                                    @if (m.Item_Width == "0")
+                                    {
+                                        <p style="font-style:italic">We're sorry, this item's dimensions aren't in our database.</p>
+                                        <label for="Width">Width: </label>
+                                        <input type='number' name='Width' />
+
+                                    }
+                                    @if (m.Item_Length == "0")
+                                    {
+                                        <label for="Length">Length</label>
+                                        <input type='number' name='Length' />
+                                        @Html.DropDownList("Measurement",
+                                                new SelectList(Enum.GetValues(typeof(TypesOfMeasurement))),
+                                                new { @style = "width:50px" })
+                                    }
+
+                                    <button class="btn-orange" type="submit" onclick="GetPositions()">Add</button>
+                                </div>
+                            </form>
+                            <div style="clear:both"></div>
+                        }
                             <div style="height:10px;clear:both"></div>
 
                         </div>
