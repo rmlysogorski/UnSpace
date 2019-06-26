@@ -153,7 +153,7 @@
         {
             if (Model.SpaceDimensions.Width != null && Model.SpaceDimensions.Length != null)
             {
-                <div id="mySpace" style="margin:0 auto;position:relative;display:block;width:@(Model.SpaceDimensions.Width)px; height:@(Model.SpaceDimensions.Length)px;background-color:whitesmoke;border:1px dashed black;">
+                <div id="mySpace" style="overflow:hidden;margin:0 auto;position:relative;display:block;width:@(Model.SpaceDimensions.Width)px; height:@(Model.SpaceDimensions.Length)px;background-color:whitesmoke;border:1px dashed black;">
                     @if (Model.furnList.Count > 0)
                     {
                         for (var i = 0; i < Model.furnList.Count; i++)
