@@ -25,7 +25,7 @@ namespace UnSpaceWebApp.Models
         }
 
         [HttpPost]
-        public ActionResult FurnitureList( List<string> Left, List<string> Top, string SearchQ, string Color, string pageNo = "")
+        public ActionResult FurnitureList( List<string> Left, List<string> Top, string SearchQ, string Color = "", string pageNo = "")
         {
             SpaceController.SavePositions(Left, Top);
             List<EtsyItem> items = new List<EtsyItem>();

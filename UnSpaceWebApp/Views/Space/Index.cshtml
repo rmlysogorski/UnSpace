@@ -4,17 +4,17 @@
     ViewBag.Title = "Let's UnSpace Your Space!";
 }
 <style type="text/css">
-    .X{
-       float:right;
-       right:0;
-       display:inline-block;
-       position:absolute;
-       text-decoration:none;
-       border:none;
-       outline:none;
-       color:red;
-       font-weight:bold;
-       background-color:transparent;
+    .X {
+        float: right;
+        right: 0;
+        display: inline-block;
+        position: absolute;
+        text-decoration: none;
+        border: none;
+        outline: none;
+        color: red;
+        font-weight: bold;
+        background-color: transparent;
     }
 </style>
 <script type="text/javascript">
@@ -84,7 +84,45 @@
             //document.getElementById(idTop).value = document.getElementById(furnId).style.top;
         }
     }
+    
 </script>
+@*<script>
+    function Rotate() {
+        globalVars = {
+            originalTop: 0,
+            originalLeft: 0,
+            maxHeight: ("#draggable").height() - ("#container").height(),
+            maxWidth: ("#draggable").width() - ("#container").width()
+        };
+        ("#draggable").draggable({
+            start: function(event, ui) {
+                if (ui.position != undefined) {
+                    $.globalVars.originalTop = ui.position.top;
+                    $.globalVars.originalLeft = ui.position.left;
+                }
+            },
+            drag: function(event, ui) {
+                var newTop = ui.position.top;
+                var newLeft = ui.position.left;
+                if (ui.position.top < 0 && ui.position.top * -1 > $.globalVars.maxHeight) {
+                    newTop = $.globalVars.maxHeight * -1;
+                }
+                if (ui.position.top > 0) {
+                    newTop = 0;
+                }
+                if (ui.position.left < 0 && ui.position.left * -1 > $.globalVars.maxWidth) {
+                    newLeft = $.globalVars.maxWidth * -1;
+                }
+                if (ui.position.left > 0) {
+                    newLeft = 0;
+                }
+                ui.position.top = newTop;
+                ui.position.left = newLeft;
+            }
+        });
+    });
+</script>*@
+
 
 
 <div style="padding:15px;margin:0 auto;background-color:whitesmoke;width:auto;display:block;text-align:center;box-shadow:0 0 2px gray;border:2px solid #4169e1">
@@ -116,15 +154,18 @@
                                 }
                                 <div style="left:@((Model.furnList[i].Positions.Left) == null?"0":Model.furnList[i].Positions.Left);
                                         top: @((Model.furnList[i].Positions.Top) == null? "0":Model.furnList[i].Positions.Top);"
-                                     id="@furnId"><button onclick="GetPositions()" class="X">X</button>
-                                <img  height="@(Model.furnList[i].Item_Length)px" width = "@(Model.furnList[i].Item_Width)px" src="@(Model.furnList[i].ImageThumbUrl)" /></div>
+                                     id="@furnId">
+                                    <button onclick="GetPositions()" class="X">X</button>
+                                    <div id="container">
+                                        <img onclick="Rotate" id="draggable" height=" @(Model.furnList[i].Item_Length)px" width="@(Model.furnList[i].Item_Width)px" src="@(Model.furnList[i].ImageThumbUrl)" />
+                                    </div>
+                                </div>
                                 <input name="Index" type="text" value="@(i)" hidden />
                             </form>
                             <script>
                                 var furnId = 'furn' + count;
                                 count++;
                                 DisplayFurn(furnId);
-
                             </script>
                         }
                     }
@@ -142,7 +183,7 @@
                         margin: auto;
                     }
 
-                    
+
 
                     /* Next & previous buttons */
                     .prev, .next {
@@ -230,10 +271,10 @@
                         }
                     }
 
-                        <!-- Next and previous buttons -->
-                        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                        <a class="next" onclick="plusSlides(1)">&#10095;</a>
-                    </div>
+                    <!-- Next and previous buttons -->
+                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                </div>
                 <br>
 
                 <!-- The dots/circles -->
@@ -288,8 +329,8 @@
                             }
                         }
 
-                        @Html.Label("Name", "Give it a name:", new { @class = "control-label", @style = "margin-right:10px;"})
-                        @Html.TextBox("Name", ((Model.Name != string.Empty)? Model.Name : ""), new { @class = "form-control", @style = "margin-right:10px;" })
+                        @Html.Label("Name", "Give it a name:", new { @class = "control-label", @style = "margin-right:10px;" })
+                        @Html.TextBox("Name", ((Model.Name != string.Empty) ? Model.Name : ""), new { @class = "form-control", @style = "margin-right:10px;" })
 
                         <button class="btn-orange" onclick="GetPositions()" value="submit">Save</button>
                     </form>
@@ -345,30 +386,30 @@
                                         }
                                     }
 
-                                }
-                                <input type="text" name="Listing_Id" value="@(m.Listing_Id)" hidden />
-                                <input type="text" name="Title" value="@(m.Title)" hidden />
-                                <input type="text" name="Description" value="@(m.Description)" hidden />
-                                <input type="text" name="Url" value="@(m.Url)" hidden />
-                                <input type="text" name="Price" value="@(m.Price)" hidden />
-                                <input type="text" name="Currency_Code" value="@(m.Currency_Code)" hidden />
-                                <input type="text" name="ImageThumbUrl" value="@(m.ImageThumbUrl)" hidden />
-                                <input type="text" name="ImageFullUrl" value="@(m.ImageFullUrl)" hidden />
-                                <div style="display:block;float:left;">
-                                    <img style="padding:10px;" src="@m.ImageThumbUrl" />
-                                    <p>@m.Item_Length @m.Item_Width</p>
-                                </div>
-                                <div>
-                                    <p><a href="@m.Url">@m.Title</a></p>
-                                    <p>@m.Description</p>
-                                    <p>@m.Price @m.Currency_Code</p>
-                                </div> 
-                                <div style="clear:both">
-                                    <button class="btn-orange" type="submit" onclick="GetPositions()">Add</button>
-                                </div>
-                            </form>
-                            <div style="clear:both"></div>
-                        }
+                                    }
+                                    <input type="text" name="Listing_Id" value="@(m.Listing_Id)" hidden />
+                                    <input type="text" name="Title" value="@(m.Title)" hidden />
+                                    <input type="text" name="Description" value="@(m.Description)" hidden />
+                                    <input type="text" name="Url" value="@(m.Url)" hidden />
+                                    <input type="text" name="Price" value="@(m.Price)" hidden />
+                                    <input type="text" name="Currency_Code" value="@(m.Currency_Code)" hidden />
+                                    <input type="text" name="ImageThumbUrl" value="@(m.ImageThumbUrl)" hidden />
+                                    <input type="text" name="ImageFullUrl" value="@(m.ImageFullUrl)" hidden />
+                                    <div style="display:block;float:left;">
+                                        <img style="padding:10px;" src="@m.ImageThumbUrl" />
+                                        <p>@m.Item_Length @m.Item_Width</p>
+                                    </div>
+                                    <div>
+                                        <p><a href="@m.Url">@m.Title</a></p>
+                                        <p>@m.Description</p>
+                                        <p>@m.Price @m.Currency_Code</p>
+                                    </div>
+                                    <div style="clear:both">
+                                        <button class="btn-orange" type="submit" onclick="GetPositions()">Add</button>
+                                    </div>
+                                </form>
+                                <div style="clear:both"></div>
+                            }
                             <div style="height:10px;clear:both"></div>
 
                         </div>
