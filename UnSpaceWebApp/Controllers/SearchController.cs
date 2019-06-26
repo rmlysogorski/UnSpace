@@ -11,6 +11,7 @@ using UnSpaceWebApp.Controllers;
 
 namespace UnSpaceWebApp.Models
 {
+    [Authorize]
     public class SearchController : Controller
     {
         // GET: Search
@@ -43,6 +44,7 @@ namespace UnSpaceWebApp.Models
                     
                     SearchQ += "&min_price= 0";
                     SearchQ += "&max_price= " + MaxP;
+                    TempData["MaxP"] = MaxP;
 
                 }
                 JObject data = EtsyDAL.GetEtsyAPI(" &limit=5&category=furniture&keywords=" + SearchQ, "active");
@@ -63,7 +65,11 @@ namespace UnSpaceWebApp.Models
                 {
                     TempData["prevPage"] = null;
                 }
-                TempData["nextPage"] = (int)data["pagination"]["next_page"];
+                string nextPage = data["pagination"]["next_page"].ToString();
+                if (nextPage != string.Empty)
+                {
+                    TempData["nextPage"] = (int)data["pagination"]["next_page"];
+                }
                 for (int i = 0; i < data["results"].Count(); i++)
                 {
                     EtsyItem newItem = new EtsyItem();

@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 
 namespace UnSpaceWebApp.Controllers
 {
+    [Authorize]
     public class SpaceController : Controller
     {
         public static MySpace thisSpace = new MySpace();
@@ -43,6 +44,11 @@ namespace UnSpaceWebApp.Controllers
             {
                 ViewBag.SearchQ = TempData["SearchQ"];
                 TempData["SearchQ"] = TempData["SearchQ"];
+            }
+            if(TempData["MaxP"] != null)
+            {
+                ViewBag.MaxP = TempData["MaxP"];
+                TempData["MaxP"] = TempData["MaxP"];
             }
             return View(thisSpace);
         }  
@@ -117,16 +123,19 @@ namespace UnSpaceWebApp.Controllers
                         JObject data = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 2005)}&category=furniture&keywords=" + "table", "active");
                         EtsyItem newItem = new EtsyItem();
                         newItem.Listing_Id = data["results"][randomo]["listing_id"].ToString();
+                        //Check Width & Height before adding
                         items.Add(EtsyDAL.MakeEtsyItem(newItem.Listing_Id));
 
                         JObject data2 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 123)}&category=furniture&keywords=" + "couch", "active");
                         EtsyItem newItem2 = new EtsyItem();
                         newItem2.Listing_Id = data2["results"][randomo]["listing_id"].ToString();
+                        //Check Width & Height before adding
                         items.Add(EtsyDAL.MakeEtsyItem(newItem2.Listing_Id));
 
                         JObject data3 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 123)}&category=furniture&keywords=" + "chair", "active");                                                                  
                         EtsyItem newItem3 = new EtsyItem();               
                         newItem3.Listing_Id = data3["results"][randomo]["listing_id"].ToString();
+                        //Check Width & Height before adding
                         items.Add(EtsyDAL.MakeEtsyItem(newItem3.Listing_Id));
                 
 
@@ -141,16 +150,19 @@ namespace UnSpaceWebApp.Controllers
                     JObject dataK = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 2005)}&keywords=" + "plant", "active");
                     EtsyItem newItemK = new EtsyItem();
                     newItemK.Listing_Id = dataK["results"][randomoK]["listing_id"].ToString();
+                    //Check Width & Height before adding
                     items.Add(EtsyDAL.MakeEtsyItem(newItemK.Listing_Id));
 
                     JObject dataK2 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 20)}&category=furniture&keywords=" + "clock", "active");
                     EtsyItem newItemK2 = new EtsyItem();
                     newItemK2.Listing_Id = dataK2["results"][randomoK]["listing_id"].ToString();
+                    //Check Width & Height before adding
                     items.Add(EtsyDAL.MakeEtsyItem(newItemK2.Listing_Id));
 
                     JObject dataK3 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 851)}&category=furniture&keywords=" + "stool", "active");
                     EtsyItem newItemK3 = new EtsyItem();
                     newItemK3.Listing_Id = dataK3["results"][randomoK]["listing_id"].ToString();
+                    //Check Width & Height before adding
                     items.Add(EtsyDAL.MakeEtsyItem(newItemK3.Listing_Id));
 
 
@@ -163,16 +175,19 @@ namespace UnSpaceWebApp.Controllers
                     JObject dataB = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 557)}&category=furniture&keywords=" + "bed", "active");
                     EtsyItem newItemB = new EtsyItem();
                     newItemB.Listing_Id = dataB["results"][randomoB]["listing_id"].ToString();
+                    //Check Width & Height before adding
                     items.Add(EtsyDAL.MakeEtsyItem(newItemB.Listing_Id));
 
                     JObject dataB2 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 135)}&category=furniture&keywords=" + "night%20stand", "active");
                     EtsyItem newItemB2 = new EtsyItem();
                     newItemB2.Listing_Id = dataB2["results"][randomoB]["listing_id"].ToString();
+                    //Check Width & Height before adding
                     items.Add(EtsyDAL.MakeEtsyItem(newItemB2.Listing_Id));
 
                     JObject dataB3 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 2005)}&keywords=" + "lamp", "active");
                     EtsyItem newItemB3 = new EtsyItem();
                     newItemB3.Listing_Id = dataB3["results"][randomoB]["listing_id"].ToString();
+                    //Check Width & Height before adding
                     items.Add(EtsyDAL.MakeEtsyItem(newItemB3.Listing_Id));
 
                     break;
@@ -183,16 +198,19 @@ namespace UnSpaceWebApp.Controllers
                     JObject dataD = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 52)}&category=furniture&keywords=" + "dinning%20table", "active");
                     EtsyItem newItemD = new EtsyItem();
                     newItemD.Listing_Id = dataD["results"][randomoD]["listing_id"].ToString();
+                    //Check Width & Height before adding
                     items.Add(EtsyDAL.MakeEtsyItem(newItemD.Listing_Id));
 
                     JObject dataD2 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 123)}&category=furniture&keywords=" + "chair", "active");
                     EtsyItem newItemD2 = new EtsyItem();
                     newItemD2.Listing_Id = dataD2["results"][randomoD]["listing_id"].ToString();
+                    //Check Width & Height before adding
                     items.Add(EtsyDAL.MakeEtsyItem(newItemD2.Listing_Id));
 
                     JObject dataD3 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 24)}&keywords=" + "clock", "active");
                     EtsyItem newItemD3 = new EtsyItem();
                     newItemD3.Listing_Id = dataD3["results"][randomoD]["listing_id"].ToString();
+                    //Check Width & Height before adding
                     items.Add(EtsyDAL.MakeEtsyItem(newItemD3.Listing_Id));
 
                     break;
@@ -203,16 +221,20 @@ namespace UnSpaceWebApp.Controllers
                     JObject dataF = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 2005)}&keywords=" + "painting", "active");
                     EtsyItem newItemF = new EtsyItem();
                     newItemF.Listing_Id = dataF["results"][randomoF]["listing_id"].ToString();
-                    items.Add(EtsyDAL.MakeEtsyItem(newItemF.Listing_Id));
+                    newItemF = EtsyDAL.MakeEtsyItem(newItemF.Listing_Id);
+                    //Check Width & Height before adding
+                    items.Add(newItemF);
 
                     JObject dataF2 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 123)}&category=furniture&keywords=" + "chair", "active");
                     EtsyItem newItemF2 = new EtsyItem();
                     newItemF2.Listing_Id = dataF2["results"][randomoF]["listing_id"].ToString();
+                    //Check Width & Height before adding
                     items.Add(EtsyDAL.MakeEtsyItem(newItemF2.Listing_Id));
 
                     JObject dataF3 = EtsyDAL.GetEtsyAPI($"&page={randomPage.Next(0, 123)}&keywords=" + "lamp", "active");
                     EtsyItem newItemF3 = new EtsyItem();
                     newItemF3.Listing_Id = dataF3["results"][randomoF]["listing_id"].ToString();
+                    //Check Width & Height before adding
                     items.Add(EtsyDAL.MakeEtsyItem(newItemF3.Listing_Id));
 
                     break;
@@ -264,6 +286,10 @@ namespace UnSpaceWebApp.Controllers
             {
                 TempData["SearchQ"] = TempData["SearchQ"];
             }
+            if (TempData["MaxP"] != null)
+            {
+                TempData["MaxP"] = TempData["MaxP"];
+            }
             EtsyItem etsyItem = new EtsyItem();
             etsyItem.Listing_Id = Listing_Id;
             etsyItem = EtsyDAL.MakeEtsyItem(etsyItem.Listing_Id);
@@ -292,6 +318,10 @@ namespace UnSpaceWebApp.Controllers
             if (TempData["SearchQ"] != null)
             {
                 TempData["SearchQ"] = TempData["SearchQ"];
+            }
+            if (TempData["MaxP"] != null)
+            {
+                TempData["MaxP"] = TempData["MaxP"];
             }
             SavePositions(Left, Top);
             UserSpace userSpace = new UserSpace();
@@ -361,14 +391,17 @@ namespace UnSpaceWebApp.Controllers
             {
                 TempData["SearchQ"] = TempData["SearchQ"];
             }
+            if (TempData["MaxP"] != null)
+            {
+                TempData["MaxP"] = TempData["MaxP"];
+            }
             SavePositions(Left, Top);
             thisSpace.furnList.RemoveAt(int.Parse(Index));
             return RedirectToAction("Index");
         }
 
         public ActionResult SlideShowTest()
-        {
-            
+        {            
             return View(thisSpace.furnList);
         }
 

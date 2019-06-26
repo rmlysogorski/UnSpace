@@ -105,12 +105,12 @@
         }
     }
 
-    function RotateItem(imgId) {
-        var width = imgId.width;
-        var height = imgId.height;
-        imgId.width = height + 2;
-        imgId.height = width + 2;
-    }
+    //function RotateItem(imgId) {
+    //    var width = imgId.width;
+    //    var height = imgId.height;
+    //    imgId.width = height + 2;
+    //    imgId.height = width + 2;
+    //}
     
 </script>
 
@@ -125,41 +125,45 @@
         {
             if (Model.SpaceDimensions.Width != null && Model.SpaceDimensions.Length != null)
             {
-                <div id="mySpace" style="margin:0 auto;position:relative;display:block;width:@(Model.SpaceDimensions.Width)px; height:@(Model.SpaceDimensions.Length)px;background-color:whitesmoke;border:1px dashed black;">
+                <div id="mySpace" style="overflow:hidden;margin:0 auto;position:relative;display:block;width:@(Model.SpaceDimensions.Width)px; height:@(Model.SpaceDimensions.Length)px;background-color:whitesmoke;border:1px dashed black;">
+                   @* Check if there's furniture data in the list *@
                     @if (Model.furnList.Count > 0)
                     {
+                        @* Loops through the furniture list to create each div that houses the furniture data *@
                         for (var i = 0; i < Model.furnList.Count; i++)
                         {
                             var furnId = "furn" + i;
                             var imgId = "img" + i;
-                            <form action="../Space/RemoveFurn" method="post">
-                                @if (Model.furnList.Count > 0)
-                                {
-                                    for (var j = 0; j < Model.furnList.Count; j++)
-                                    {
-                                        var posIdLeft = "pos" + j + "Left";
-                                        var posIdTop = "pos" + j + "Top";
-                                        <input class="@(posIdLeft)" name="Left" type="text" hidden />
-                                        <input class="@(posIdTop)" name="Top" type="text" hidden />
-                                        <input name="Listings" type="text" value="@(Model.furnList[j].Listing_Id)" hidden />
-                                    }
-                                }
-                                <div style="left:@((Model.furnList[i].Positions.Left) == null?"0":Model.furnList[i].Positions.Left);
+                    <form action="../Space/RemoveFurn" method="post">
+                        @* This loop ensures that we grab all of the positions for all of the images when the form is submitted *@
+                        @if (Model.furnList.Count > 0)
+                        {
+                            for (var j = 0; j < Model.furnList.Count; j++)
+                            {
+                                var posIdLeft = "pos" + j + "Left";
+                                var posIdTop = "pos" + j + "Top";
+                                <input class="@(posIdLeft)" name="Left" type="text" hidden />
+                                <input class="@(posIdTop)" name="Top" type="text" hidden />
+                                <input name="Listings" type="text" value="@(Model.furnList[j].Listing_Id)" hidden />
+                            }
+                        }
+                        @* Now the div is created with data from the Model *@
+                        <div style="left:@((Model.furnList[i].Positions.Left) == null?"0":Model.furnList[i].Positions.Left);
                                         top: @((Model.furnList[i].Positions.Top) == null? "0":Model.furnList[i].Positions.Top);"
-                                     id="@furnId">
-                                    <button onclick="GetPositions()" class="X">X</button>                                    
-                                    <button type="button" onclick="RotateItem(@imgId)" class="R"><img width="20" height="20" src="~/Content/Images/rotate-arrow.png" /></button>
-                                    <img onclick="currentSlide(@(i+1))"
-                                         style="border:1px solid black"
-                                         id="@imgId"
-                                         height="@(Model.furnList[i].Item_Length)px"
-                                         width="@(Model.furnList[i].Item_Width)px"
-                                         src="~/Content/Images/dot.gif" />
-                                    <span style="padding:0;margin:0;position:absolute;top:50%;transform:translateY(-50%);left:50%;transform:translateX(-50%);text-align:center;width:20px;height:20px;line-height:20px;color:whitesmoke;background-color:black;border-radius:20px;font-size:12px;">@(i + 1)</span>
-                                </div>
+                             id="@furnId">
+                            <button onclick="GetPositions()" class="X">X</button>
+                            @*<button type="button" onclick="RotateItem(@imgId)" class="R"><img width="20" height="20" src="~/Content/Images/rotate-arrow.png" /></button>*@
+                            <img onclick="currentSlide(@(i+1))"
+                                 style="border:1px solid black"
+                                 id="@imgId"
+                                 height="@(Model.furnList[i].Item_Length)px"
+                                 width="@(Model.furnList[i].Item_Width)px"
+                                 src="~/Content/Images/dot.gif" />
+                            <span style="padding:0;margin:0;position:absolute;top:50%;transform:translateY(-50%);left:50%;transform:translateX(-50%);text-align:center;width:20px;height:20px;line-height:20px;color:whitesmoke;background-color:black;border-radius:20px;font-size:12px;">@(i + 1)</span>
+                        </div>
 
-                                <input name="Index" type="text" value="@(i)" hidden />
-                            </form>
+                        <input name="Index" type="text" value="@(i)" hidden />
+                    </form>
                             <script>
                                 var furnId = 'furn' + count;
                                 count++;
@@ -373,10 +377,10 @@
                             }
                         }
                         @Html.Label("SearchQ", "Furniture Type:", new { @class = "control-label", @style = "margin-right:10px;" })
-                        @Html.TextBox("SearchQ", "", new { @class = "form-control", @style = "margin-right:10px;" })
+                        @Html.TextBox("SearchQ", "", new { @class = "form-control", @style = "margin-right:10px;", @pattern="([a-zA-Z])*", @title="Please enter only text."  })
                         <br />
                         @Html.Label("MaxP", "Max Price:", new { @class = "control-label", @style = "margin-right:10px;" })
-                        @Html.TextBox("MaxP", "", new { @class = "form-control", @style = "margin-right:10px;" })
+                        @Html.TextBox("MaxP", "", new { @class = "form-control", @style = "margin-right:10px;", @pattern="([0-9])*(.)([0-9])*", @title="Please enter only numbers." })
 
                         <button type="submit" id="button" class="btn-orange button" onclick="GetPositions()">Search</button>
                     }
@@ -454,6 +458,7 @@
                             {
                                 <form action="../Search/FurnitureList" method="post" style="display:block;">
                                     <input type="text" name="SearchQ" value="@ViewBag.SearchQ" hidden />
+                                    <input type="text" name="MaxP" value="@ViewBag.MaxP" hidden />
                                     @if (Model.furnList.Count > 0)
                                     {
                                         for (var i = 0; i < Model.furnList.Count; i++)
