@@ -11,8 +11,8 @@
         box-shadow: none;
         font-size: 22px;
         font-family: 'Segoe UI';
-        background-color:transparent;
-        color:royalblue;
+        background-color: transparent;
+        color: royalblue;
     }
 </style>
 <div style="text-align:center;">
@@ -22,25 +22,33 @@
 @if (Model != null)
 
 {
-    
 
-        <form action="../Space/Index" method="post">
-            @for (var i = 0; i < Model.Count; i++)
-            {
-            <div style="vertical-align:top;padding:15px;margin:0 auto;height:auto;background-color:whitesmoke;width:auto;display:inline-block;text-align:center;box-shadow:0 0 2px gray;border:2px solid #4169e1">
+    for (var i = 0; i < Model.Count; i++)
+    {
+        <div style="vertical-align:top;padding:15px;margin:0 auto;height:auto;background-color:whitesmoke;width:auto;display:inline-block;text-align:center;box-shadow:0 0 2px gray;border:2px solid #4169e1">
+
+            <form action="../Space/Index" method="post">
+
                 <button class="spaceName" name="Id" type="submit" value="@Model[i].Id">@Model[i].Name</button>
                 @foreach (var f in Model[i].furnList)
                 {
-                    <div style="display:block; padding:10px;text-align:left;"> 
+                    <div style="display:block; padding:10px;text-align:left;">
                         <img style="display:inline-block;float:left;padding-right:10px;" src="@f.ImageThumbUrl" />
                         <p><a href="@f.Url">@f.Title</a></p>
                         <p>@f.Price @f.Currency_Code</p>
                     </div>
                     <div style="clear:both;"></div>
                 }
-            </div>
-            }
-        </form>
+            </form>
+
+            <form action="../UnSpaceDb/RemoveUserSpace" method="post">
+                <input type="text" value="@Model[i].Id" name="Id" hidden />
+                <button class="btn-orange" type="submit">Remove</button>
+            </form>
+        </div>
+
+
+    }
 }
 
 

@@ -30,7 +30,7 @@ namespace UnSpaceWebApp.Models
         {
             SpaceController.SavePositions(Left, Top);
             List<EtsyItem> items = new List<EtsyItem>();
-            if (SearchQ != null)
+            if (SearchQ != null && SearchQ != string.Empty)
             {   
                 if(pageNo != string.Empty)
                 {
