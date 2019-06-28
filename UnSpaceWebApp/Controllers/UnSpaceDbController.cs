@@ -62,8 +62,8 @@ namespace UnSpaceWebApp.Controllers
             }
             foreach (EtsyItem e in furnList)
             {
-                EtsyItemDb res = ORM.EtsyItemDbs.SingleOrDefault(r=>r.Listing_Id == e.Listing_Id);
-                if (res == null)
+                List<EtsyItemDb> res = ORM.EtsyItemDbs.Where(r=>r.Listing_Id == e.Listing_Id).ToList();
+                if (res.Count == 0)
                 {
                     EtsyItemDb dbItem = new EtsyItemDb();
                     dbItem.Listing_Id = e.Listing_Id;
@@ -94,6 +94,13 @@ namespace UnSpaceWebApp.Controllers
             return RedirectToAction("Index", "Space");
         }
 
+        public ActionResult RemoveUserSpace(int Id)
+        {
+            UserSpace userSpace = ORM.UserSpaces.Find(Id);
+            ORM.UserSpaces.Remove(userSpace);
+            ORM.SaveChanges();
+            return RedirectToAction("Favorites", "Home");
+        }
         public static List<UserSpace> GetUserSpaces(string Name)
         {
             List<UserSpace> userSpaces = new List<UserSpace>();
@@ -108,21 +115,30 @@ namespace UnSpaceWebApp.Controllers
 
         public static EtsyItem ConvertEtsyItemDb(string listing)
         {
-            EtsyItemDb e = ORM.EtsyItemDbs.SingleOrDefault(result => result.Listing_Id == listing);
-            EtsyItem etsyItem = new EtsyItem();
-            etsyItem.Listing_Id = e.Listing_Id;
-            etsyItem.Title = e.Title;
-            etsyItem.Price = e.Price;
-            etsyItem.Currency_Code = e.Currency_Code;
-            etsyItem.Item_Length = e.Item_Length;
-            etsyItem.Item_Width = e.Item_Width;
-            etsyItem.Item_Height = e.Item_Height;
-            etsyItem.Item_Dimensions_unit = e.Item_Dimensions_Unit;
-            etsyItem.Url = e.Url;
-            etsyItem.ImageThumbUrl = e.ImageThumbUrl;
-            etsyItem.ImageFullUrl = e.ImageFullUrl;
-            etsyItem.Description = e.Description;
-            return etsyItem;
+            List<EtsyItemDb> res = ORM.EtsyItemDbs.Where(r => r.Listing_Id == listing).ToList();
+            if(res.Count > 0)
+            {
+                EtsyItemDb e = res[0];
+                EtsyItem etsyItem = new EtsyItem();
+                etsyItem.Listing_Id = e.Listing_Id;
+                etsyItem.Title = e.Title;
+                etsyItem.Price = e.Price;
+                etsyItem.Currency_Code = e.Currency_Code;
+                etsyItem.Item_Length = e.Item_Length;
+                etsyItem.Item_Width = e.Item_Width;
+                etsyItem.Item_Height = e.Item_Height;
+                etsyItem.Item_Dimensions_unit = e.Item_Dimensions_Unit;
+                etsyItem.Url = e.Url;
+                etsyItem.ImageThumbUrl = e.ImageThumbUrl;
+                etsyItem.ImageFullUrl = e.ImageFullUrl;
+                etsyItem.Description = e.Description;
+                return etsyItem;
+            }
+            else
+            {
+                return new EtsyItem();
+            }
+            
         }
     }
 }

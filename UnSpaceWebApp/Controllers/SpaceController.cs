@@ -246,7 +246,7 @@ namespace UnSpaceWebApp.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult SaveFurn(List<string> Listings, List<string> Left, List<string> Top, string Name)
+        public ActionResult SaveFurn(List<string> Listings, List<string> Left, List<string> Top, string Name = "")
         {
             if (TempData["prevPage"] != null)
             {
@@ -268,10 +268,19 @@ namespace UnSpaceWebApp.Controllers
             UserSpace userSpace = new UserSpace();
             userSpace.UserId = User.Identity.Name;
             userSpace.Name = Name;
+            if (Name == string.Empty || Name == null)
+            {
+                return RedirectToAction("Index");
+            }
+            if(Listings == null)
+            {
+                return RedirectToAction("Index");
+            }
             userSpace.Listing = GenerateListingString(Listings);
             userSpace.SpaceDimensions = GenerateSpaceDimensions();
             userSpace.Positions = GeneratePositionString(Left, Top);
             TempData["furnList"] = thisSpace.furnList;
+            
             return RedirectToAction("SaveUserSpace", "UnSpaceDb",  userSpace );
         }
 

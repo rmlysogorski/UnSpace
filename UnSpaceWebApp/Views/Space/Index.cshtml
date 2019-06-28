@@ -280,7 +280,8 @@
                             <div class="mySlides">
                                 <div style="float:left;" class="numbertext">@(i + 1)</div>
                                 <img style="display:block;float:left;padding:5px;" src="@(Model.furnList[i].ImageThumbUrl)">
-                                <p style="display:block;">@(Model.furnList[i].Title)</p>
+                                <p style="display:block;"><a href="@(Model.furnList[i].Url)">@(Model.furnList[i].Title)</a></p>
+                                <p style="display:block;">@(Model.furnList[i].Price) @(Model.furnList[i].Currency_Code)</p>
                             </div>
                         }
                         <!-- Next and previous buttons -->
@@ -377,7 +378,7 @@
                             }
                         }
                         @Html.Label("SearchQ", "Furniture Type:", new { @class = "control-label", @style = "margin-right:10px;" })
-                        @Html.TextBox("SearchQ", "", new { @class = "form-control", @style = "margin-right:10px;", @pattern="([a-zA-Z])*", @title="Please enter only text."  })
+                        @Html.TextBox("SearchQ", "", new { @class = "form-control", @style = "margin-right:10px;", @pattern="([a-zA-Z\\s])*", @title="Please enter only text."  })
                         <br />
                         @Html.Label("MaxP", "Max Price:", new { @class = "control-label", @style = "margin-right:10px;" })
                         @Html.TextBox("MaxP", "", new { @class = "form-control", @style = "margin-right:10px;", @pattern="([0-9])*(.)([0-9])*", @title="Please enter only numbers." })
@@ -432,13 +433,13 @@
                                         {
                                             <p style="font-style:italic">We're sorry, this item's dimensions aren't in our database.</p>
                                             <label for="Width">Width: </label>
-                                            <input type='number' name='Width' />
+                                            <input type='text' name='Width' pattern="([0-9])*(.)([0-9])*" title="Please enter only numbers."  />
 
                                         }
                                         @if (m.Item_Length == "0")
                                         {
                                             <label for="Length">Length</label>
-                                            <input type='number' name='Length' />
+                                            <input type='text' pattern="([0-9])*(.)([0-9])*" title="Please enter only numbers."  name='Length' />
                                             @Html.DropDownList("Measurement",
                                                     new SelectList(Enum.GetValues(typeof(TypesOfMeasurement))),
                                                     new { @style = "width:50px" })
@@ -493,9 +494,9 @@
                 @using (@Html.BeginForm("GenerateSpace", "Space", FormMethod.Post, new { @class = "form-group" }))
                 {
                     @Html.Label("Width", "Width:")
-                    @Html.TextBox("Width", "", new { @class = "form-control" })
+                    @Html.TextBox("Width", "15", new { @class = "form-control", @pattern="([0-9])*(.)([0-9])*", @title="Please enter only numbers."  })
                     @Html.Label("Length", "Length:")
-                    @Html.TextBox("Length", "", new { @class = "form-control" })
+                    @Html.TextBox("Length", "15", new { @class = "form-control", @pattern="([0-9])*(.)([0-9])*", @title="Please enter only numbers."  })
                     @Html.Label("Measurement", "Measurement:")
                     @Html.DropDownList("Measurement",
                                     new SelectList(Enum.GetValues(typeof(TypesOfMeasurement))),
